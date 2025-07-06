@@ -31,7 +31,7 @@ class NeuralNetwork:
         for layer in range(len(self.__size) - 1):
             zi = np.dot(self.__weights[layer], activations[-1])
             activations.append(
-                self.activation_functions[layer]().compute(zi)
+                self.activation_functions[layer].compute(zi)
             )
 
         self.__activations = activations
@@ -43,8 +43,8 @@ class NeuralNetwork:
         delta_layers[-1] = None
 
 if __name__ == '__main__':
-    s = Sigmoid
-    sse = SSE
+    s = Sigmoid()
+    sse = SSE()
     nn = NeuralNetwork([2, 5, 1], [s, s], sse)
     print(nn.feed_forward(np.array([0, 2])))
     print(nn.activation_functions)
