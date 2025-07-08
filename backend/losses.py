@@ -8,4 +8,3 @@ class SSE:
     @staticmethod
     def derivative(y_hat, y) -> np.array:
         return np.array(y_hat - y).astype('float32')
-

@@ -4,7 +4,7 @@ import sklearn
 from tqdm import tqdm
 
 from activations import Sigmoid, ReLU
-from losses import SSE, BCE
+from losses import SSE
 
 
 class NeuralNetwork:
@@ -12,10 +12,10 @@ class NeuralNetwork:
         self.__size = size
         self.__weights = [None]
         self.__biases = [None]
-        # self.__activations = []
-        # self.__z_activations = [None]
+        self.__activations = []
+        self.__z_activations = [None]
         self.__layer_activations = [None, ReLU, Sigmoid]
-        self.__model_loss = BCE
+        self.__model_loss = SSE
         self.__initialise_parameters()
 
     def __initialise_parameters(self):
@@ -37,24 +37,26 @@ class NeuralNetwork:
             z_activations.append(zi)
             activations.append(ai)
 
+        self.__activations = activations
+        self.__z_activations = z_activations
 
-        return z_activations, activations # y_hat
+        return activations[-1] # y_hat
 
-    def backprop(self, xi, yi, activations, z_activations):
+    def backprop(self, xi, yi):
         deltas = [None] * len(self.__size)
         weight_derivatives = [None]
         bias_derivatives = [None]
 
-        deltas[-1] = self.__model_loss.derivative(activations[-1], yi)
-        deltas[-1] *= self.__layer_activations[-1].derivative(activations[-1])
+        deltas[-1] = self.__model_loss.derivative(self.__activations[-1], yi)
+        deltas[-1] *= self.__layer_activations[-1].derivative(self.__z_activations[-1])
 
         for layer in reversed(range(1, len(self.__size) - 1)):
             deltas[layer] = self.__weights[layer+1].T @ deltas[layer+1]
-            deltas[layer] *= self.__layer_activations[layer].derivative(z_activations[layer])
+            deltas[layer] *= self.__layer_activations[layer].derivative(self.__z_activations[layer])
 
         for layer in reversed(range(1, len(self.__size))):
             weight_derivatives.append(
-                deltas[layer] @ activations[layer - 1].T
+                deltas[layer] @ self.__activations[layer - 1].T
             )
 
             bias_derivatives.append(
@@ -66,25 +68,25 @@ class NeuralNetwork:
         return weight_derivatives, bias_derivatives
 
 
-    def fit(self, x, y, epochs=10, lr=0.01):
-        losses = np.array([])
+    def fit(self, x, y, epochs=100, lr=0.1):
+        losses = []
         for i in tqdm(range(epochs)):
+            loss = 0
             for j in range(len(x)):
-                z_activations, activations = self.forward(x[j])
+                y_hat = self.forward(x[j])
 
 
-                losses = np.append(
-                    losses,
-                    self.__model_loss.compute(activations[-1], y[j])
-                )
-                weight_derivatives, bias_derivatives = self.backprop(x[j], y[j], activations, z_activations)
+                loss += self.__model_loss.compute(y_hat, y[j])
+                weight_derivatives, bias_derivatives = self.backprop(x[j], y[j])
 
                 for layer in range(len(weight_derivatives)):
                     if type(self.__weights[layer]) == type(None): continue
                     self.__weights[layer] -= lr * weight_derivatives[layer]
                     self.__biases[layer] -= lr * bias_derivatives[layer]
 
-        return np.array(losses).reshape(epochs * len(x))
+            losses.append(loss / len(x))
+
+        return np.array(losses).reshape(epochs)
 if __name__ == '__main__':
     model = NeuralNetwork([2, 16, 1])
 
@@ -103,3 +105,6 @@ if __name__ == '__main__':
 
     plt.plot(losses)
     plt.show()
+
+    print(model.forward(x[3])[-1])
+    print(y[3])
