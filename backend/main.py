@@ -4,75 +4,102 @@ import sklearn
 from tqdm import tqdm
 
 from activations import Sigmoid, ReLU
-from losses import SSE
+from losses import SSE, BCE
 
 
 class NeuralNetwork:
-    def __init__(self, size, activation_functions, loss) -> None:
+    def __init__(self, size):
         self.__size = size
-        self.__weights = []
-        self.__biases = []
-        self.__activations = []
-        self.__z_activations = []
-        self.__activation_functions = [None] + activation_functions
-        self.__model_loss = loss
+        self.__weights = [None]
+        self.__biases = [None]
+        # self.__activations = []
+        # self.__z_activations = [None]
+        self.__layer_activations = [None, ReLU, Sigmoid]
+        self.__model_loss = BCE
         self.__initialise_parameters()
 
-    def __initialise_parameters(self) -> None:
-        model_size = self.__size
-        for layer in range(1, len(model_size)):
+    def __initialise_parameters(self):
+        for layer in range(1, len(self.__size)):
             self.__weights.append(
-                np.random.randn(model_size[layer], model_size[layer-1])
+                np.random.randn(self.__size[layer], self.__size[layer-1])
             )
             self.__biases.append(
-                np.random.randn(1, model_size[layer])
+                np.random.randn(self.__size[layer], 1)
             )
 
-
-    def feed_forward(self, x) -> np.array:
-        activations = [x]
+    def forward(self, xi):
+        activations = [xi]
         z_activations = [None]
+
         for layer in range(1, len(self.__size)):
-            zi = np.dot(self.__weights[layer-1], activations[-1].reshape(-1, 1))
+            zi = (self.__weights[layer] @ activations[-1]) + self.__biases[layer]
+            ai = self.__layer_activations[layer].compute(zi)
+            z_activations.append(zi)
+            activations.append(ai)
 
-            activations.append(
-                self.__activation_functions[layer].compute(zi)
-            )
 
-            z_activations.append(
-                zi
-            )
+        return z_activations, activations # y_hat
 
-        self.__activations = activations
-        self.__z_activations = z_activations
-        return activations[-1] # Returns y_hat
-
-    def backpropagation(self) -> tuple:
-        # computing Delta L
+    def backprop(self, xi, yi, activations, z_activations):
         deltas = [None] * len(self.__size)
-        deltas[-1] = self.__model_loss.derivative(np.array([1]), np.array([2]))
-        deltas[-1] = deltas[-1] * self.__activation_functions[-1].derivative(self.__z_activations[-1]).reshape(-1, 1)
+        weight_derivatives = [None]
+        bias_derivatives = [None]
 
-        for layer in range(1, len(self.__size) - 1 ):
+        deltas[-1] = self.__model_loss.derivative(activations[-1], yi)
+        deltas[-1] *= self.__layer_activations[-1].derivative(activations[-1])
 
-            deltas[layer] = (self.__weights[layer].T @ deltas[layer+1])
-            deltas[layer] = deltas[layer] * self.__activation_functions[layer].derivative(self.__z_activations[layer])
+        for layer in reversed(range(1, len(self.__size) - 1)):
+            deltas[layer] = self.__weights[layer+1].T @ deltas[layer+1]
+            deltas[layer] *= self.__layer_activations[layer].derivative(z_activations[layer])
 
-        weight_derivatives = []
-        bias_derivatives = []
-
-        for layer, delta in enumerate(deltas):
-            if type(delta) == type(None): continue
+        for layer in reversed(range(1, len(self.__size))):
             weight_derivatives.append(
-                delta @ self.__activations[layer-1].reshape(-1, 1).T
+                deltas[layer] @ activations[layer - 1].T
             )
-            bias_derivatives.append(deltas)
 
+            bias_derivatives.append(
+                deltas[layer]
+            )
+
+        weight_derivatives = [None] + list(reversed(weight_derivatives[1:]))
+        bias_derivatives = [None] + list(reversed(bias_derivatives[1:]))
         return weight_derivatives, bias_derivatives
 
+
+    def fit(self, x, y, epochs=10, lr=0.01):
+        losses = np.array([])
+        for i in tqdm(range(epochs)):
+            for j in range(len(x)):
+                z_activations, activations = self.forward(x[j])
+
+
+                losses = np.append(
+                    losses,
+                    self.__model_loss.compute(activations[-1], y[j])
+                )
+                weight_derivatives, bias_derivatives = self.backprop(x[j], y[j], activations, z_activations)
+
+                for layer in range(len(weight_derivatives)):
+                    if type(self.__weights[layer]) == type(None): continue
+                    self.__weights[layer] -= lr * weight_derivatives[layer]
+                    self.__biases[layer] -= lr * bias_derivatives[layer]
+
+        return np.array(losses).reshape(epochs * len(x))
 if __name__ == '__main__':
-    s = Sigmoid
-    sse = SSE
-    nn = NeuralNetwork([2, 5, 1], [s, s], sse)
-    nn.feed_forward(np.array([0, 2]))
-    nn.backpropagation()
+    model = NeuralNetwork([2, 16, 1])
+
+    x, y = sklearn.datasets.make_moons(n_samples=10000, noise=0.1)
+    x, y = sklearn.utils.shuffle(x, y, random_state=72)
+
+    x = x.reshape(-1, 2, 1)
+    y = y.reshape(-1, 1, 1)
+
+    model.forward(x[0])
+    # model.backprop(x[0], y[0])
+    #losses = model.fit(x, y)
+    losses = model.fit(x, y)
+    # plt.plot(np.array(losses).reshape(200000))
+    # plt.show()
+
+    plt.plot(losses)
+    plt.show()
