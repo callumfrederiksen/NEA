@@ -1,0 +1,20 @@
+.coloured-header .icon-header {
+    height: 70px;
+}
+
+.coloured-header {
+    background-color: #8C8C8C;
+    width:100%;
+}
+
+.icon-header {
+    background-color: #595959;
+    width: 15%;
+}
+
+.icon-text {
+    color: white;
+    font-family: helvetica;
+    text-align: center;
+    padding-top: 25px;
+}
