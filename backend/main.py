@@ -1,31 +1,29 @@
 import numpy as np
-import matplotlib.pyplot as plt
-import sklearn
 from tqdm import tqdm
 
-from activations import Sigmoid, ReLU
-from losses import SSE
-
-
 class NeuralNetwork:
-    def __init__(self, size):
+    def __init__(self, size, layer_activations, model_loss):
         self.__size = size
         self.__weights = [None]
         self.__biases = [None]
         self.__activations = []
         self.__z_activations = [None]
-        self.__layer_activations = [None, ReLU, Sigmoid]
-        self.__model_loss = SSE
+        self.__layer_activations = [None] + layer_activations
+        self.__model_loss = model_loss
+        self.__delta_L_activation_required = True
         self.__initialise_parameters()
 
     def __initialise_parameters(self):
         for layer in range(1, len(self.__size)):
             self.__weights.append(
-                np.random.randn(self.__size[layer], self.__size[layer-1])
+                np.random.randn(self.__size[layer], self.__size[layer-1]) / 10
             )
             self.__biases.append(
-                np.random.randn(self.__size[layer], 1)
+                np.random.randn(self.__size[layer], 1) / 100
             )
+
+        if self.__model_loss.combination:
+            self.__delta_L_activation_required = False
 
     def forward(self, xi):
         activations = [xi]
@@ -33,6 +31,7 @@ class NeuralNetwork:
 
         for layer in range(1, len(self.__size)):
             zi = (self.__weights[layer] @ activations[-1]) + self.__biases[layer]
+
             ai = self.__layer_activations[layer].compute(zi)
             z_activations.append(zi)
             activations.append(ai)
@@ -48,7 +47,9 @@ class NeuralNetwork:
         bias_derivatives = [None]
 
         deltas[-1] = self.__model_loss.derivative(self.__activations[-1], yi)
-        deltas[-1] *= self.__layer_activations[-1].derivative(self.__z_activations[-1])
+
+        if self.__delta_L_activation_required:
+            deltas[-1] *= self.__layer_activations[-1].derivative(self.__z_activations[-1])
 
         for layer in reversed(range(1, len(self.__size) - 1)):
             deltas[layer] = self.__weights[layer+1].T @ deltas[layer+1]
@@ -68,7 +69,7 @@ class NeuralNetwork:
         return weight_derivatives, bias_derivatives
 
 
-    def fit(self, x, y, epochs=100, lr=0.1):
+    def fit(self, x, y, epochs, lr=0.1):
         losses = []
         for i in tqdm(range(epochs)):
             loss = 0
@@ -85,26 +86,4 @@ class NeuralNetwork:
                     self.__biases[layer] -= lr * bias_derivatives[layer]
 
             losses.append(loss / len(x))
-
         return np.array(losses).reshape(epochs)
-if __name__ == '__main__':
-    model = NeuralNetwork([2, 16, 1])
-
-    x, y = sklearn.datasets.make_moons(n_samples=10000, noise=0.1)
-    x, y = sklearn.utils.shuffle(x, y, random_state=72)
-
-    x = x.reshape(-1, 2, 1)
-    y = y.reshape(-1, 1, 1)
-
-    model.forward(x[0])
-    # model.backprop(x[0], y[0])
-    #losses = model.fit(x, y)
-    losses = model.fit(x, y)
-    # plt.plot(np.array(losses).reshape(200000))
-    # plt.show()
-
-    plt.plot(losses)
-    plt.show()
-
-    print(model.forward(x[3])[-1])
-    print(y[3])

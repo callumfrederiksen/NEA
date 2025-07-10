@@ -18,3 +18,13 @@ class ReLU:
     @staticmethod
     def derivative(x):
         return np.array(x > 0).astype('float32')
+
+
+class Softmax:
+    @staticmethod
+    def compute(z):
+        return np.exp(z) / np.sum(np.exp(z))
+
+    @staticmethod
+    def derivative(x):
+        pass # Used in combination with losses.CategoricalCrossEntropyWithSoftmax
