@@ -23,7 +23,7 @@ train_y = np.array(train_y).reshape(-1, 10, 1)
 train_y, test_y = train_y[:48000], train_y[48000:]
 
 model = NeuralNetwork([784, 256, 128, 10], layer_activations=[ReLU, ReLU, Softmax], model_loss=CategoricalCrossEntropyWithSoftmax)
-losses = model.fit(train_X, train_y, epochs=10, lr=0.001)
+losses = model.fit(train_X, train_y, epochs=100, lr=0.001)
 
 plt.plot(losses)
 plt.show()
@@ -42,4 +42,4 @@ for i, sample in enumerate(test_X):
     if np.array_equal(one_hot.reshape(10), test_y[i].reshape(10)): correct += 1
     total += 1
 
-print(correct/total*100)
+print(f'{correct/total*100:.2f}% accuracy')
