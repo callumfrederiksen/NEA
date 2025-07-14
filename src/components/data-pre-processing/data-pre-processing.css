@@ -1,6 +1,10 @@
+/*body {*/
+/*    width: 100%;*/
+/*}*/
+
 .main-column {
     background-color: black;
-    height:1000px;
+    height:calc(100vh - 70px);
 
     width:30%;
 }
