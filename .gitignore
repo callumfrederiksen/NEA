@@ -24,3 +24,5 @@ yarn-error.log*
 
 datasets
 backend/__pycache__
+
+package-lock.json
