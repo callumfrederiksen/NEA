@@ -1,10 +1,30 @@
-/*body {*/
-/*    width: 100%;*/
-/*}*/
+.main-column-properties {
+    background-color: #89888C;
+}
 
 .main-column {
-    background-color: #89888C;
     height:calc(100vh - 70px);
 
     width:30%;
+}
+
+.upload-section {
+    padding-top: 25px;
+    padding-left: 20px;
+    font-family: helvetica;
+}
+
+#upload-input {
+    display: none;
+}
+
+.file-input-label {
+    border: 1px solid black;
+    padding: 10px 30px;
+}
+
+.upload-button {
+    padding: 10px 5px;
+    background-color: black;
+    color: white;
 }

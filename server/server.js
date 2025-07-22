@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 
 const storage = multer.diskStorage({
-    destination: './',
+    destination: './uploads/',
     filename: (req, file, cb) => {
         cb(null, file.originalname);
     }
@@ -21,5 +21,5 @@ app.post('/upload', upload.single('file'), (req, res) => {
 })
 
 app.listen(3001, () => {
-    console.log('server ruuning');
+    console.log('Server Running on port 3001');
 })
