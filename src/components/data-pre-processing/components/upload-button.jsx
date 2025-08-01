@@ -17,7 +17,7 @@ function UploadButton() {
                 file
             );
 
-            await fetch('http://localhost:3001/upload', {
+            await fetch('http://localhost:8443/upload', {
                 method: 'POST',
                 body: formData
             });
