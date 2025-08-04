@@ -25,12 +25,15 @@ function UploadButton() {
     }
 
     return ( // https://stackoverflow.com/questions/572768/styling-an-input-type-file-button
-        <div className={'main-column-properties upload-section'}>
-            <label htmlFor={'upload-input'} className={'file-input-label'}>
+        <div className={'upload-section'}>
+            <label htmlFor={'upload-input'} className={'upload-input-label'}>
                 Upload File
             </label>
             <input id={'upload-input'} type={'file'} onChange={ handleFile } />
-            <button className={'upload-button'} onClick={ fileUpload } >Upload</button>
+            <label htmlFor={'upload-button'} className={'upload-button-label'}>
+                <b>Upload</b>
+            </label>
+            <button id={'upload-button'} onClick={ fileUpload }></button>
         </div>
     );
 }
