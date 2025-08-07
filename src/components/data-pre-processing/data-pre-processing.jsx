@@ -8,4 +8,4 @@ const DataPreProcessing = () => {
     )
 }
 
-export default DataPreProcessing
+export default DataPreProcessing;
