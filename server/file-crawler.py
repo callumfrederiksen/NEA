@@ -1,7 +1,8 @@
 import os
 import pandas as pd
+import requests
 
-PATH = '../uploads/'
+PATH = './uploads/'
 
 def loop():
     while True:
@@ -12,4 +13,4 @@ dir = loop()
 
 df = pd.read_csv(PATH + str(dir[0]))
 
-print(df.columns.tolist())
+requests.post("http://localhost:8443/column-selector", json={'columns': df.columns.tolist()})
