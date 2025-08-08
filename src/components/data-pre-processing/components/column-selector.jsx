@@ -1,23 +1,21 @@
-import React, { useState } from 'react';
-const express = require('express');
-const cors = require('cors');
-
-const port = 8443;
-
-const app = express();
-app.use(cors());
-
+import React, { useState, useEffect } from 'react';
 
 function ColumnSelector() {
-    const [columns, setColumns] = useState(null);
+    const [columns, setColumns] = useState([]);
 
-    app.post('/response1', (req, res) => {
-        console.log(req);
-        setColumns(req)
-    })
+    useEffect(() => {
+        const fetchColumns = async ()=> {
+            let response =  await fetch('http://localhost:8443/return-column-selector')
+            const data = await response.json();
+            setColumns(data.columns);
+            console.log(data.columns)
+        }
+        fetchColumns();
+    }, [])
+
 
     return (
-        <>{columns}</>
+        <>{columns.map(str => <p>{str}</p>)}</>
     )
 }
 
