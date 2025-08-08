@@ -8,6 +8,7 @@ const fs = require('fs');
 
 const app = express();
 app.use(cors());
+app.use(express.json())
 
 const storage = multer.diskStorage({
     destination: './uploads/',
@@ -18,13 +19,18 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-
-
 app.post('/upload', upload.single('file'), (req, res) => {
     if(req.file) { res.send('hell yeah'); 
 console.log("recieved");
+
 }
 })
+
+app.post('/column-selector', (req, res) => {
+    var { columns } = req.body
+    console.log("recieved columns: ", columns);
+    res.send('yes');
+});
 /*
 const privateKey = fs.readFileSync('/etc/ssl/name_com/PRIVATEKEY.key', 'utf8');
 const certificate = fs.readFileSync('/etc/ssl/name_com/2507935545.crt', 'utf8');
