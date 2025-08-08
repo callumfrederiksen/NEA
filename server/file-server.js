@@ -1,4 +1,5 @@
 const port = 8443; // Port for server for FILE UPLOADS to run on 
+let latestColumns = [];
 
 const express = require('express');
 const multer = require('multer');
@@ -27,9 +28,14 @@ console.log("recieved");
 })
 
 app.post('/column-selector', (req, res) => {
-    var { columns } = req.body
-    console.log("recieved columns: ", columns);
+    let { columns } = req.body;
+    latestColumns = columns;
+    console.log("recieved columns: ", latestColumns);
     res.send('yes');
+});
+
+app.get('/return-column-selector', (req, res) => {
+    res.json({'columns': latestColumns});
 });
 /*
 const privateKey = fs.readFileSync('/etc/ssl/name_com/PRIVATEKEY.key', 'utf8');
