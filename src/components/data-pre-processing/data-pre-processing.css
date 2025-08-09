@@ -17,9 +17,10 @@
 }
 
 .upload-section {
-    padding-top: 40px;
-    padding-left: 20%;
-
+    padding-top: 12%;
+    /*padding-left: 20%;*/
+    margin: auto;
+    width: 55%;
 }
 
 .upload-input-label {
@@ -34,4 +35,21 @@
     background-color: #404049;
     color: white;
     padding: 10px 25px;
+}
+
+.column-selector-container {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+    width: 50%;
+
+    height: 25%;
+    background-color: #c8c8cd;
+
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.text-columns {
+    font-family: helvetica;
 }

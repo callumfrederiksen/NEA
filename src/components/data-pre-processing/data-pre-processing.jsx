@@ -6,6 +6,7 @@ const DataPreProcessing = () => {
         <div className={'main-column main-column-properties'}>
             <UploadButton />
             <ColumnSelector/>
+
         </div>
     )
 }

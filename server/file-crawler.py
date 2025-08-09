@@ -9,8 +9,13 @@ def loop():
         if len(os.listdir(PATH)) != 0:
             return os.listdir(PATH)
 
-dir = loop()
+while True:
+    dir = loop()
 
-df = pd.read_csv(PATH + str(dir[0]))
-
-requests.post("http://localhost:8443/column-selector", json={'columns': df.columns.tolist()})
+    df = pd.read_csv(PATH + str(dir[0]))
+    try:
+        if df.columns.tolist() != odf.columns.tolist():
+            requests.post("http://localhost:8443/column-selector", json={'columns': df.columns.tolist()})
+    except:
+        requests.post("http://localhost:8443/column-selector", json={'columns': df.columns.tolist()})
+    odf = df

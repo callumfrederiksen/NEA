@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../data-pre-processing.css';
 
 function ColumnSelector() {
     const [columns, setColumns] = useState([]);
@@ -15,7 +16,9 @@ function ColumnSelector() {
 
 
     return (
-        <>{columns.map(str => <p>{str}</p>)}</>
+        <div className={'column-selector-container'}>
+            {columns.map(str => <p className={'text-columns'}>{str}</p>)}
+        </div>
     )
 }
 
