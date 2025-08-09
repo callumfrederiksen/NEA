@@ -37,7 +37,7 @@ app.post('/column-selector', (req, res) => {
 app.get('/return-column-selector', (req, res) => {
     res.json({'columns': latestColumns});
 });
-/*
+
 const privateKey = fs.readFileSync('/etc/ssl/name_com/PRIVATEKEY.key', 'utf8');
 const certificate = fs.readFileSync('/etc/ssl/name_com/2507935545.crt', 'utf8');
 const bundle = fs.readFileSync('/etc/ssl/name_com/bundle.crt', 'utf8');
@@ -54,8 +54,8 @@ const credentials = {
 https.createServer(credentials, app).listen(port, () => {
     console.log('Server Running on port ' + port);
 });
-*/
 
-app.listen(port, () => {
-    console.log('Server running on port ' + port);
-})
+
+// app.listen(port, () => {
+//     console.log('Server running on port ' + port);
+// })
