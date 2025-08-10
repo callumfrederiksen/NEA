@@ -64,8 +64,21 @@
 
 .custom-select-1 {
     appearance: none;
-    width: 100%;
+    width: 70%;
     height: 30px;
     background-color: #c8c8cd;
     border: none;
+}
+
+#select-y-value-button {
+    display: none;
+}
+
+.select-y-value-label {
+    background-color: #404049;
+    padding-top: 5px;
+    padding-bottom: 7px;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: white;
 }
