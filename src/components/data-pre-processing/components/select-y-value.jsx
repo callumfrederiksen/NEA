@@ -1,6 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import '../data-pre-processing.css';
 
+function submitYValue() {
+    console.log('yo')
+}
+
 function SelectYValue() {
     const [columns, setColumns] = useState([]);
 
@@ -20,6 +24,10 @@ function SelectYValue() {
                 {/*<option>Select a y-value:</option>*/}
                 {columns.map((str, idx) => <option>&nbsp;&nbsp;{idx+1}. {str}</option>)}
             </select>
+
+            <label htmlFor={'select-y-value-button'} className={'select-y-value-label'}><b>Submit</b></label>
+            <button id={'select-y-value-button'} onClick={submitYValue}></button>
+
         </div>
     )
 }
