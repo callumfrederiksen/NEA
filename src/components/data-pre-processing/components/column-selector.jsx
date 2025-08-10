@@ -6,10 +6,9 @@ function ColumnSelector() {
 
     useEffect(() => {
         const fetchColumns = async ()=> {
-            let response =  await fetch('https://trainable.studio:8443/return-column-selector')
+            let response = await fetch('http://localhost:8443/return-column-selector')
             const data = await response.json();
             setColumns(data.columns);
-            console.log(data.columns)
         }
         fetchColumns();
     }, [])
@@ -17,7 +16,8 @@ function ColumnSelector() {
 
     return (
         <div className={'column-selector-container'}>
-            {columns.map(str => <p className={'text-columns'}>{str}</p>)}
+            <div style={{'padding-top': '4px'}}></div>
+            {columns.map((str, idx) => <p className={'text-columns'}>&nbsp;{idx+1}.<b> {str}</b></p>)}
         </div>
     )
 }

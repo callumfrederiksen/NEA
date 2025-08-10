@@ -4,7 +4,7 @@ function Header() {
     return (
         <div className={'coloured-header'}>
         <div className={'icon-header'}>
-            <p className={'icon-text'}><b>TrainMe</b></p>
+            <p className={'icon-text'}>trainable<b>.studio</b></p>
         </div>
         </div>
     );
