@@ -16,7 +16,8 @@ function ColumnSelector() {
 
     return (
         <div className={'column-selector-container'}>
-            {columns.map(str => <p className={'text-columns'}>{str}</p>)}
+            <div style={{'padding-top': '4px'}}></div>
+            {columns.map((str, idx) => <p className={'text-columns'}>&nbsp;{idx+1}.<b> {str}</b></p>)}
         </div>
     )
 }
