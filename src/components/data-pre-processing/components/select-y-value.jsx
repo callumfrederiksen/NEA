@@ -15,9 +15,10 @@ function SelectYValue() {
 
     return (
         <div className={'select-y-value-container'}>
-            <select>
-                <option>Select a y-value:</option>
-                {columns.map(str => <option>{str}</option>)}
+            <select className={'custom-select-1'}>
+                <option>&nbsp;&nbsp;Select Column...</option>
+                {/*<option>Select a y-value:</option>*/}
+                {columns.map((str, idx) => <option>&nbsp;&nbsp;{idx+1}. {str}</option>)}
             </select>
         </div>
     )

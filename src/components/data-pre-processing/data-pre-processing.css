@@ -40,7 +40,7 @@
 .column-selector-container {
     margin-left: auto;
     margin-right: auto;
-    margin-top: 10%;
+    margin-top: 5px;
     width: 50%;
 
     height: 25%;
@@ -48,8 +48,24 @@
 
     overflow: hidden;
     overflow-y: scroll;
+
 }
 
 .text-columns {
     font-family: helvetica;
+}
+
+.select-y-value-container {
+    width: 50%;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top: 5px;
+}
+
+.custom-select-1 {
+    appearance: none;
+    width: 100%;
+    height: 30px;
+    background-color: #c8c8cd;
+    border: none;
 }
