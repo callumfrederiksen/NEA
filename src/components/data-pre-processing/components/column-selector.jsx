@@ -6,10 +6,9 @@ function ColumnSelector() {
 
     useEffect(() => {
         const fetchColumns = async ()=> {
-            let response =  await fetch('http://localhost:8443/return-column-selector')
+            let response = await fetch('http://localhost:8443/return-column-selector')
             const data = await response.json();
             setColumns(data.columns);
-            console.log(data.columns)
         }
         fetchColumns();
     }, [])
