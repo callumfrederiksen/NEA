@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import requests
+import time
 
 PATH = './uploads/'
 
@@ -21,3 +22,5 @@ while True:
             requests.post("http://localhost:8443/column-selector", json={'columns': df.columns.tolist()})
         odf = df
     except: pass
+
+    time.sleep(2)
