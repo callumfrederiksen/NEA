@@ -1,5 +1,6 @@
 const port = 8443; // Port for server for FILE UPLOADS to run on 
 let latestColumns = [];
+let yColumn = "";
 
 const express = require('express');
 const multer = require('multer');
@@ -8,8 +9,9 @@ const https = require('https');
 const fs = require('fs');
 
 const app = express();
-app.use(cors());
+
 app.use(express.json())
+app.use(cors());
 
 const storage = multer.diskStorage({
     destination: './uploads/',
@@ -36,6 +38,17 @@ app.post('/column-selector', (req, res) => {
 
 app.get('/return-column-selector', (req, res) => {
     res.json({'columns': latestColumns});
+});
+
+app.post('/select-y-column', (req, res) => {
+    let { yColumnName } = req.body;
+    yColumn = yColumnName;
+    console.log("reciencd: ", yColumnName);
+    res.json({'status': 200})
+});
+
+app.get('/return-select-y-column', (req, res) => {
+    res.json({"yColumnName": yColumn});
 });
 /*
 const privateKey = fs.readFileSync('/etc/ssl/name_com/PRIVATEKEY.key', 'utf8');

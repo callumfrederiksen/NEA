@@ -7,10 +7,10 @@ const DataPreProcessing = () => {
         <div className={'main-column main-column-properties'}>
             <UploadButton />
 
-            <p style={{'text-align': 'center', 'padding-top': '10%'}}><b>Columns in Dataset:</b></p>
+            <p style={{'textAlign': 'center', 'paddingTop': '10%'}}><b>Columns in Dataset:</b></p>
             <ColumnSelector/>
 
-            <p style={{'text-align': 'center', 'padding-top': '5%'}}><b>Select the Y Column:</b></p>
+            <p style={{'textAlign': 'center', 'paddingTop': '5%'}}><b>Select the Y Column:</b></p>
             <SelectYValue />
 
         </div>
