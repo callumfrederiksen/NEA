@@ -4,23 +4,26 @@ import requests
 import time
 
 PATH = './uploads/'
+uploaded = False;
 
-def loop():
-    while True:
-        if len(os.listdir(PATH)) != 0:
-            return os.listdir(PATH)
+def upload_data():
+    response = requests.get("http://localhost:8443/has-uploaded")
+    reponse_json = response.json()
+    has_uploaded = reponse_json['hasUploaded']
+    file_path = reponse_json['filePath']
 
-while True:
-    try:
-        dir = loop()
+    return has_uploaded, file_path
 
-        df = pd.read_csv(PATH + str(dir[0]))
-        try:
-            if df.columns.tolist() != odf.columns.tolist():
-                requests.post("http://localhost:8443/column-selector", json={'columns': df.columns.tolist()})
-        except:
-            requests.post("http://localhost:8443/column-selector", json={'columns': df.columns.tolist()})
-        odf = df
-    except: pass
+def get_columns(file_path):
+    df = pd.read_csv(file_path)
+    columns = df.columns.tolist()
+    return columns
 
-    time.sleep(2)
+while not uploaded:
+    uploaded, file_path = upload_data()
+
+    if uploaded:
+        columns = get_columns(file_path)
+        requests.post("http://localhost:8443/column-selector", json={'columns': columns})
+
+    time.sleep(1)
