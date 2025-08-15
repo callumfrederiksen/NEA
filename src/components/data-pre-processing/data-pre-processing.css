@@ -82,3 +82,25 @@
     padding-right: 5px;
     color: white;
 }
+
+.submit-button-container {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+
+    position: relative;
+}
+
+#submit-button {
+    display: none;
+}
+
+.submit-button-label {
+    background-color: #404049;
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    padding: 10px 0;
+    color: white;
+}
