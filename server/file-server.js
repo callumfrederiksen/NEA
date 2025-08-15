@@ -13,6 +13,11 @@ const PATH = './uploads/'
 const port = 8443; // Port for server for FILE UPLOADS to run on
 let latestColumns = [];
 let yColumn = "";
+let size = [];
+let activations = []
+let loss = "";
+let hyperparamtersSubmitted = false;
+
 
 let uploadStruct = {
     "hasUploaded": false,
@@ -61,6 +66,24 @@ app.post('/select-y-column', (req, res) => {
 app.get('/return-select-y-column', (req, res) => {
     res.json({"yColumnName": yColumn});
 });
+
+app.post('/submit-hyperparameters', (req, res) => {
+    let { modelSize, layerActivations, modelLoss } = req.body;
+    size = modelSize;
+    activations = layerActivations;
+    loss = modelLoss;
+    hyperparamtersSubmitted = true;
+});
+
+app.get("/return-hyperparameters", (req, res) => {
+    res.json({
+        submitted: hyperparamtersSubmitted,
+        modelSize: size,
+        layerActivations: activations,
+        modelLoss: loss
+    });
+})
+
 /*
 const privateKey = fs.readFileSync('/etc/ssl/name_com/PRIVATEKEY.key', 'utf8');
 const certificate = fs.readFileSync('/etc/ssl/name_com/2507935545.crt', 'utf8');
