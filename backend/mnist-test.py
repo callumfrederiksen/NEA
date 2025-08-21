@@ -8,10 +8,10 @@ import numpy as np
 class DataImplementation:
     def __init__(self):
         self.__FILE_PATH = './datasets/mnist_train.csv'
-        self.__TRAIN_TEST_SPLIT = 0.8  # 80% train, 20% test
         self.__SIZE = [784, 256, 128, 10]
         self.__ACTIVATIONS = [ReLU, ReLU, Softmax]
         self.__LOSS = CategoricalCrossEntropyWithSoftmax
+        self.__TRAIN_TEST_SPLIT = 0.8  # 80% train, 20% test
         self.__DATASET_SIZE = [785, 1]
         self.__Y_COLUMN_SIZE = [10, 1]
         self.__Y_COLUMN = 'label'
