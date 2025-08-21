@@ -12,7 +12,6 @@ function App() {
     return (
       <>
       <ModelHyperparameterSelection/>
-      { displayModelHyperparameterSelection : <p>hi</p> ? <p>bye</p> }
       <Header />
       <DataPreProcessing />
 
