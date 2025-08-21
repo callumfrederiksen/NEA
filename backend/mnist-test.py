@@ -5,7 +5,7 @@ from losses import *
 import pandas as pd
 import numpy as np
 
-class DataPreProcessing:
+class DataImplementation:
     def __init__(self):
         self.__FILE_PATH = './datasets/mnist_train.csv'
         self.__TRAIN_TEST_SPLIT = 0.8  # 80% train, 20% test
@@ -13,6 +13,7 @@ class DataPreProcessing:
         self.__ACTIVATIONS = [ReLU, ReLU, Softmax]
         self.__LOSS = CategoricalCrossEntropyWithSoftmax
         self.__DATASET_SIZE = [785, 1]
+        self.__Y_COLUMN_SIZE = [10, 1]
         self.__Y_COLUMN = 'label'
         self.__Y_INDEX = 0  # ASSUMED
 
@@ -35,11 +36,34 @@ class DataPreProcessing:
 
         return (self.__train_X, self.__train_y), (self.__test_X, self.__test_y)
 
+    def __one_hot_encode(self, array, output_size):
+        min_value, max_value = min(array), max(array)
+        range = (max_value - min_value + 1)[0]
+
+        output_array = []
+
+        for element in array:
+            out = [0] * range
+
+            out[element[0]] = 1
+            output_array.append(out)
+
+        output_array = np.array(output_array)
+
+        to_reshape = [-1] + output_size
+        output_array = output_array.reshape(to_reshape)
+
+        return output_array
+
     def compute(self):
         self.__read_csv()
         self.__get_dataset_size()
         self.__train_test_split()
 
+        self.__train_y = self.__one_hot_encode(self.__train_y, [10, 1])
+        self.__test_y = self.__one_hot_encode(self.__test_y, [10, 1])
+
 if __name__ == '__main__':
-    dpp = DataPreProcessing()
-    dpp.compute()
+    di = DataImplementation()
+    di.compute()
+
