@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 from losses import *
-from activations import *
+from activations import * 
 from main import NeuralNetwork
 
 import matplotlib.pyplot as plt
