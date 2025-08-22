@@ -2,13 +2,14 @@ import UploadButton from './components/upload-button.jsx';
 import ColumnSelector from './components/column-selector.jsx';
 import SelectYValue from './components/select-y-value.jsx';
 import TrainButton from './components/train-button.jsx';
+import ModelConfig from '../model-config/model-config.jsx';
 
 import { useState } from 'react';
 
 import './data-pre-processing.css';
 
 const DataPreProcessing = () => {
-    const [ displayConfigs, setDisplayConfigs ] = useState(false);
+    const [ displayConfigs, setDisplayConfigs ] = useState(true); // change
 
     const switchDisplayConfigsON = () => {
         setDisplayConfigs(true);
@@ -26,6 +27,8 @@ const DataPreProcessing = () => {
                     <label htmlFor={'back-config-button'} className={'back-config-button-label'}><b> &lt; &nbsp;</b> Back</label>
                     <button id={'back-config-button'} onClick={ switchDisplayConfigsOFF }></button>
                 </div>
+
+                <ModelConfig />
             </div>
         )
     } else {

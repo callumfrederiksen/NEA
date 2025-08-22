@@ -1,0 +1,31 @@
+.slider-container {
+    margin-left: auto;
+    margin-right: auto;
+
+    width: 50%;
+}
+
+/*https://www.w3schools.com/howto/howto_js_rangeslider.asp*/
+.slider-input {
+    width: 100%;
+    appearance: none;
+    opacity: 0.8;
+    background: #404049;
+    color: red;
+    transition: opacity .15s;
+}
+
+.slider-input:hover {
+    opacity: 1;
+}
+
+.slider-input::-webkit-slider-thumb {
+    appearance: none;
+    width: 25px;
+    height: 15px;
+    background: #D0D3D9;
+}
+
+.train-test-split-display {
+    text-align: center;
+}
