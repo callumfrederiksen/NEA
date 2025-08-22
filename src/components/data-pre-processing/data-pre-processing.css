@@ -1,3 +1,7 @@
+.display-none-1 {
+    color: #89888C;
+}
+
 .main-column-properties {
     background-color: #89888C;
 }
@@ -17,7 +21,7 @@
 }
 
 .upload-section {
-    padding-top: 12%;
+    padding-top: 15px;
     /*padding-left: 20%;*/
     margin: auto;
     width: 55%;
@@ -70,9 +74,6 @@
     border: none;
 }
 
-#select-y-value-button {
-    display: none;
-}
 
 .select-y-value-label {
     background-color: #404049;
@@ -84,7 +85,7 @@
 }
 
 .submit-button-container {
-    width: 50%;
+    width: 80%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 5%;
@@ -92,11 +93,51 @@
     position: relative;
 }
 
-#submit-button {
+#submit-button, #config-button, #back-config-button, #select-y-value-button {
     display: none;
 }
 
 .submit-button-label {
+    background-color: #404049;
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    padding: 10px 0;
+    color: white;
+}
+
+
+
+.config-button-container {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+
+    position: relative;
+    padding-bottom: 40%;
+}
+
+.config-button-label {
+    background-color: #404049;
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    padding: 10px 0;
+    color: white;
+}
+
+.back-config-button-container {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2%;
+
+    position: relative;
+    padding-bottom: 40%;
+}
+
+.back-config-button-label {
     background-color: #404049;
     width: 100%;
     position: absolute;

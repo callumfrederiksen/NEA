@@ -17,7 +17,9 @@ let size = [];
 let activations = []
 let loss = "";
 let hyperparamtersSubmitted = false;
-
+let testTrainSplit = 1;
+let dataSetShape = [0, 1];
+let yColumnSize = [1, 1];
 
 let uploadStruct = {
     "hasUploaded": false,
@@ -80,7 +82,10 @@ app.get("/return-hyperparameters", (req, res) => {
         submitted: hyperparamtersSubmitted,
         modelSize: size,
         layerActivations: activations,
-        modelLoss: loss
+        modelLoss: loss,
+        testTrainSplit: testTrainSplit,
+        dataSetShape: dataSetShape,
+        yColumnSize: yColumnSize,
     });
 })
 
