@@ -11,6 +11,7 @@ const ModelConfig = () => {
         <div className={'form-container'}>
             <form>
                 <div className={'slider-container'}>
+                    <p className={'train-test-split-display '}><b>Select The Test-Train Split:</b></p>
                     <input className={'slider-input'} type={'range'} onChange={ onSliderChange }/>
                     <p className={'train-test-split-display'}><b>{Math.round(sliderValue*100)}% </b> train, <b>{Math.round((1-sliderValue)*100)}% </b> test </p>
                 </div>
