@@ -1,4 +1,4 @@
-.slider-container {
+.slider-container, .activation-selector-container {
     margin-left: auto;
     margin-right: auto;
 
@@ -29,4 +29,17 @@
 .train-test-split-display {
     text-align: center;
     padding-bottom: 5px;
+}
+
+.activation-layers-window {
+    width: 100%;
+    /*min-width: 100%;*/
+
+    height: 200px;
+    min-height: 200px;
+
+    background-color: #c8c8cd;
+
+    overflow: hidden;
+    overflow-y: scroll;
 }

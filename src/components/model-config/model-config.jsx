@@ -19,9 +19,23 @@ const ModelConfig = () => {
         </div>
     )
 
+    const [ layerActivations, setLayerActivations ] = useState(["ReLU", "ReLU", "Sigmoid"]);
+
+
+
+    const activationSelector = (
+        <div className={'activation-selector-container'}>
+            <div style={{ paddingTop: "10px" }}></div>
+            <div className={'activation-layers-window'}>
+                {layerActivations.map((str, idx) => <p>&nbsp; Layer {idx+1}: <b>{str}</b></p>)}
+            </div>
+        </div>
+    )
+
     return (
         <>
             {trainTestSlider}
+            {activationSelector}
         </>
     )
 }
