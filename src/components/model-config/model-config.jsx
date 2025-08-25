@@ -7,7 +7,7 @@ const ModelConfig = () => {
         setSliderValue(e.target.value / 100);
     }
 
-    return (
+    const trainTestSlider = (
         <div className={'form-container'}>
             <form>
                 <div className={'slider-container'}>
@@ -17,6 +17,12 @@ const ModelConfig = () => {
                 </div>
             </form>
         </div>
+    )
+
+    return (
+        <>
+            {trainTestSlider}
+        </>
     )
 }
 
