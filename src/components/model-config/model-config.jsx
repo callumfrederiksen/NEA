@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import './model-config.css';
 
-
-
 const ModelConfig = () => {
     let [ sliderValue, setSliderValue ] = useState(0.5);
     const onSliderChange = (e) => {
@@ -21,7 +19,24 @@ const ModelConfig = () => {
         </div>
     )
 
-    const [ layerActivations, setLayerActivations ] = useState(["ReLU", "ReLU", "Sigmoid"]);
+    const [ layerActivations, setLayerActivations ] = useState([    ]);
+    const [ selectedLayerActivation, setSelectedLayerActivation ] = useState("");
+
+    const selectedActivation = (e) => {
+        var removedNonBreakingSpace = e.target.value.substring(3);
+        if ( removedNonBreakingSpace !== "Select Activation...") {
+            setSelectedLayerActivation( removedNonBreakingSpace );
+        } else {
+            setSelectedLayerActivation("");
+        }
+    }
+
+    const addActivation = () => {
+        if(selectedLayerActivation !== "") {
+            let toAdd = layerActivations.concat(selectedLayerActivation)
+            setLayerActivations(toAdd);
+        }
+    }
 
     const activationSelector = (
         <div className={'activation-selector-container'}>
@@ -30,15 +45,15 @@ const ModelConfig = () => {
                 {layerActivations.map((str, idx) => <p>&nbsp; Layer {idx+1}: <b>{str}</b></p>)}
             </div>
             <div style={{height:"3px", backgroundColor: "#404049"}}></div>
-            <div className={'select-activation-container'}>
-                <select className={'select-activation'}>
+            <div className={'select-activation-container'} onChange={selectedActivation}>
+                <select className={'select-activation'} >
                     <option>&nbsp;&nbsp;&nbsp;Select Activation...</option>
                     <option>&nbsp;&nbsp;&nbsp;Sigmoid</option>
                     <option>&nbsp;&nbsp;&nbsp;ReLU</option>
                     <option>&nbsp;&nbsp;&nbsp;SoftMax</option>
                 </select>
                 <label htmlFor={'select-activation-button'} className={'select-activation-label'}><b>+</b> Add</label>
-                <button id={'select-activation-button'}></button>
+                <button id={'select-activation-button'} onClick={ addActivation }></button>
             </div>
         </div>
     )
