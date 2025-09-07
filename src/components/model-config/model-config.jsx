@@ -56,12 +56,37 @@ const ModelConfig = () => {
                 <button id={'select-activation-button'} onClick={ addActivation }></button>
             </div>
         </div>
-    )
+    );
 
+    const [trainingDatasetSize, setTrainingDatasetSize] = useState(0);
+    const [testingDatasetSize, setTestingDatasetSize] = useState(0);
+
+    const setDatasetSizeOnChange = (isTrain) => (e) => {
+        if(isTrain) {
+            setTrainingDatasetSize(e.target.value);
+            console.log(isTrain)
+        } else {
+            setTestingDatasetSize(e.target.value);
+            console.log(isTrain)
+        }
+    }
+
+
+    const datasetSize = (
+        <div className={'dataset-size-selection'}>
+            <div style={{paddingTop: '10px'}}></div>
+            <p style={{textAlign: 'center'}}><b>Training Dataset Size:</b></p>
+            <input type={'number'} onChange={setDatasetSizeOnChange(true)}/>
+            <div style={{paddingTop: '10px'}}></div>
+            <p style={{textAlign: 'center'}}><b>Testing Dataset Size:</b></p>
+            <input type={'number'} onChange={setDatasetSizeOnChange(false)}/>
+        </div>
+    );
     return (
         <>
             {trainTestSlider}
             {activationSelector}
+            {datasetSize}
         </>
     )
 }
