@@ -83,12 +83,12 @@ input[type=number] {
 }
 
 input[type=number]:hover {
-    opacity: 80%;
+    opacity: 75%;
     transition: 0.1s;
 }
 
 input[type=number]:focus {
-    outline:none;
+    outline: none;
     opacity: 100%;
     transition: 0.1s;
 }

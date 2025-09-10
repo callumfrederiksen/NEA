@@ -6,8 +6,6 @@ import React, {useState, useEffect} from 'react';
 import './index.css';
 
 function App() {
-    const { displayModelHyperparameterSelection, setDisplayModelHyperparameterSelection } = useState(false);
-
     return (
       <>
       <Header />
@@ -18,4 +16,3 @@ function App() {
 }
 
 export default App;
-

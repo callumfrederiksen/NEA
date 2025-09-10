@@ -9,7 +9,7 @@ import { useState } from 'react';
 import './data-pre-processing.css';
 
 const DataPreProcessing = () => {
-    const [ displayConfigs, setDisplayConfigs ] = useState(true); // change
+    const [ displayConfigs, setDisplayConfigs ] = useState(false); // change
 
     const switchDisplayConfigsON = () => {
         setDisplayConfigs(true);
