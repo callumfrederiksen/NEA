@@ -92,3 +92,31 @@ input[type=number]:focus {
     opacity: 100%;
     transition: 0.1s;
 }
+
+.submit-model-config-button-container {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+
+    position: relative;
+    min-height: 80px;
+}
+
+.submit-button-2-label {
+    bottom: 0;
+    background-color: #404049;
+    color: white;
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    padding: 10px 0;
+    color: white;
+
+}
+
+#submit-button-2 {
+    display: none;
+}
+
+

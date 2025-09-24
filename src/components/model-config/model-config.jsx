@@ -80,13 +80,23 @@ const ModelConfig = () => {
             <div style={{paddingTop: '10px'}}></div>
             <p style={{textAlign: 'center'}}><b>Testing Dataset Size:</b></p>
             <input type={'number'} onChange={setDatasetSizeOnChange(false)}/>
+            <div style={{paddingBottom: ''}}></div>
         </div>
     );
+
+    const submitModelConfigButton = (
+        <div className={'submit-model-config-button-container'}>
+            <label htmlFor={'submit-button-2'} className={'submit-button-2-label'}><b>Submit</b></label>
+            <button id={'submit-button-2'}></button>
+        </div>
+    )
+
     return (
         <>
             {trainTestSlider}
             {activationSelector}
             {datasetSize}
+            {submitModelConfigButton}
         </>
     )
 }
