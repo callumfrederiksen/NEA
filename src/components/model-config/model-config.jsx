@@ -84,10 +84,30 @@ const ModelConfig = () => {
         </div>
     );
 
+    const modelConfigSubmission = async () => {
+        const body = {
+            submitted: true,
+            modelSize: [784, 256, 128, 10],
+            layerActivations: layerActivations,
+            modelLoss: "CategoricalCrossEntropyWithSoftmax",
+            testTrainSplit: sliderValue,
+            dataSetShape: "784,1;781,1;",
+            yColumnSize: "10,1;"
+        }
+
+        const response = fetch("http://localhost:8443/submit-hyperparameters", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        });
+    }
+
     const submitModelConfigButton = (
         <div className={'submit-model-config-button-container'}>
             <label htmlFor={'submit-button-2'} className={'submit-button-2-label'}><b>Submit</b></label>
-            <button id={'submit-button-2'}></button>
+            <button id={'submit-button-2'} onClick={modelConfigSubmission}></button>
         </div>
     )
 

@@ -17,9 +17,11 @@ let size = [];
 let activations = []
 let loss = "";
 let hyperparamtersSubmitted = false;
-let testTrainSplit = 1;
-let dataSetShape = [0, 1];
-let yColumnSize = [1, 1];
+let split = 0.8;
+let shape = [0, 1];
+let ycsize = [1, 1];
+
+
 
 let uploadStruct = {
     "hasUploaded": false,
@@ -70,11 +72,14 @@ app.get('/return-select-y-column', (req, res) => {
 });
 
 app.post('/submit-hyperparameters', (req, res) => {
-    let { modelSize, layerActivations, modelLoss } = req.body;
+    let { submitted, modelSize, layerActivations, modelLoss, testTrainSplit, dataSetShape, yColumnSize } = req.body;
+    hyperparamtersSubmitted = submitted;
     size = modelSize;
     activations = layerActivations;
     loss = modelLoss;
-    hyperparamtersSubmitted = true;
+    split = testTrainSplit;
+    shape = dataSetShape;
+    ycsize = yColumnSize;
 });
 
 app.get("/return-hyperparameters", (req, res) => {
@@ -83,9 +88,9 @@ app.get("/return-hyperparameters", (req, res) => {
         modelSize: size,
         layerActivations: activations,
         modelLoss: loss,
-        testTrainSplit: testTrainSplit,
-        dataSetShape: dataSetShape,
-        yColumnSize: yColumnSize,
+        testTrainSplit: split,
+        dataSetShape: shape,
+        yColumnSize: ycsize,
     });
 })
 
