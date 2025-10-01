@@ -10,6 +10,8 @@ from main import NeuralNetwork
 
 import matplotlib.pyplot as plt
 
+from tqdm import tqdm
+
 '''
 submitted
 modelSize
@@ -54,6 +56,19 @@ y = np.array(y)
 # Train-test splits and shape normalisation
 X_TRAIN_SPLIT = int(len(x) * train_test_split)
 
-X_TRAIN, X_TEST = x[X_TRAIN_SPLIT:], x[:X_TRAIN_SPLIT]
-Y_TRAIN, Y_TEST = y[X_TRAIN_SPLIT:].reshape(-1, 1), y[:X_TRAIN_SPLIT].reshape(-1, 1)
+x_train, x_test = x[X_TRAIN_SPLIT:], x[:X_TRAIN_SPLIT]
+y_train, y_test = y[X_TRAIN_SPLIT:].reshape(-1, 1), y[:X_TRAIN_SPLIT].reshape(-1, 1)
+
+# One hot encoding
+def one_hot_encode(y, possible_values=10): # possible values represents the range of possible values
+    y = y.tolist()
+    for index, data_point in tqdm(enumerate(y)):
+        to_add = [0] * possible_values # Empty one hot encoding generator
+        to_add[int(data_point[0])] = 1
+
+        y[index] = to_add
+    y = np.array(y)
+    return y
+
+y_train, y_test = one_hot_encode(y_train), one_hot_encode(y_test)
 
