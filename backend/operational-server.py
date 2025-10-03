@@ -54,7 +54,7 @@ y = df[y_column_name]
 y = np.array(y)
 
 # Train-test splits and shape normalisation
-X_TRAIN_SPLIT = int(len(x) * train_test_split)
+X_TRAIN_SPLIT = int(len(x) - (len(x) * train_test_split))
 
 x_train, x_test = x[X_TRAIN_SPLIT:], x[:X_TRAIN_SPLIT]
 y_train, y_test = y[X_TRAIN_SPLIT:].reshape(-1, 1), y[:X_TRAIN_SPLIT].reshape(-1, 1)
@@ -72,3 +72,41 @@ def one_hot_encode(y, possible_values=10): # possible values represents the rang
 
 y_train, y_test = one_hot_encode(y_train), one_hot_encode(y_test)
 
+# Z-score normalisation
+
+# Flat normalisation
+x_train = x_train / 255
+x_test = x_test / 255
+
+# TODO
+
+# Reshaping data
+x_train, x_test = x_train.reshape(-1, 784, 1), x_test.reshape(-1, 784, 1)
+y_train, y_test = y_train.reshape(-1, 10, 1), y_test.reshape(-1, 10, 1)
+
+model = NeuralNetwork(
+    [784, 256, 128, 10],
+    layer_activations=[ReLU, ReLU, Sigmoid],
+    model_loss=CategoricalCrossEntropyWithSoftmax
+)
+
+losses = model.fit(x_train, y_train, 2, lr=0.001)
+
+plt.plot(losses)
+#plt.show()
+
+# Verifying test accuracy
+
+correct_counter = 0
+total_counter = 0
+
+for index, element in enumerate(x_test):
+    element = np.array(element).reshape(1, 784, 1)
+    prediction = model.forward(element)
+
+    if int(np.argmax(prediction)) == int(np.argmax(y_test[index])):
+        correct_counter += 1
+
+    total_counter += 1
+
+print(correct_counter / total_counter)
