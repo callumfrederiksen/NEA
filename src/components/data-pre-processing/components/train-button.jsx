@@ -3,6 +3,7 @@ import '../data-pre-processing.css';
 const TrainButton = () => {
     const onClick = async () => {
         const body = {
+            submitted: false,
             modelSize: [784, 256, 128, 10],
             layerActivations: ["ReLU", "ReLU", "Softmax"],
             modelLoss: "CategoricalCrossEntropyWithSoftmax"

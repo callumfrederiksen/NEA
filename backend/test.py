@@ -43,3 +43,4 @@ for i, sample in enumerate(test_X):
     total += 1
 
 print(f'{correct/total*100:.2f}% accuracy')
+

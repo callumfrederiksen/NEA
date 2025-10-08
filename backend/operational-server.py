@@ -85,7 +85,7 @@ x_train, x_test = x_train.reshape(-1, 784, 1), x_test.reshape(-1, 784, 1)
 y_train, y_test = y_train.reshape(-1, 10, 1), y_test.reshape(-1, 10, 1)
 
 model = NeuralNetwork(
-    [784, 256, 128, 10],
+    [784, 256, 256, 10],
     layer_activations=[ReLU, ReLU, Sigmoid],
     model_loss=CategoricalCrossEntropyWithSoftmax
 )
@@ -109,4 +109,13 @@ for index, element in enumerate(x_test):
 
     total_counter += 1
 
-print(correct_counter / total_counter)
+result = f'{(correct_counter / total_counter * 100):.2f}% accuracy'
+json_post = {
+    "accuracyMetric": result
+}
+requests.post("http://localhost:8443/returned-metrics", json_post)
+
+plt.plot(losses)
+plt.savefig("./uploads/losses.png")
+
+requests.post("http://localhost:8443/post-loss-png-url", json={"urlSubmitted": True, 'pngUrl': './uploads/losses.png'})

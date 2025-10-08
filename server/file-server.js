@@ -94,6 +94,33 @@ app.get("/return-hyperparameters", (req, res) => {
     });
 })
 
+let accuracyScore = "a";
+app.post('/returned-metrics',(req, res) => {
+    const { accuracyMetric } = req.body;
+    accuracyScore = accuracyMetric;
+});
+
+app.get('/get-returned-metrics', (req, res) => {
+    res.json({
+        accuracyMetric: accuracyScore
+    });
+});
+
+let lossSubmitted = false;
+let lossUrl = "";
+app.post("/post-loss-png-url", (req, res) => {
+    const { urlSubmitted, pngUrl } = req.body;
+    lossUrl = pngUrl;
+    lossSubmitted = urlSubmitted;
+});
+
+app.get("/get-loss-png-url", (req, res) => {
+    res.json({
+        submitted: lossSubmitted,
+        pngUrl: lossUrl
+    });
+});
+
 /*
 const privateKey = fs.readFileSync('/etc/ssl/name_com/PRIVATEKEY.key', 'utf8');
 const certificate = fs.readFileSync('/etc/ssl/name_com/2507935545.crt', 'utf8');
