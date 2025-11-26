@@ -3,6 +3,15 @@ import './model-config.css';
 
 const ModelConfig = () => {
     let [ sliderValue, setSliderValue ] = useState(0.5);
+    let [ zScoreVar, setZScoreVar ] = useState(false);
+
+    const onZScoreChange = (e) => {
+        if(zScore) {
+            setZScoreVar(true);
+        } else {
+            setZScoreVar(false);
+        }
+    }
     const onSliderChange = (e) => {
         setSliderValue(e.target.value / 100);
     }
@@ -92,8 +101,10 @@ const ModelConfig = () => {
             modelLoss: "CategoricalCrossEntropyWithSoftmax",
             testTrainSplit: sliderValue,
             dataSetShape: "784,1;781,1;",
-            yColumnSize: "10,1;"
+            yColumnSize: "10,1;",
+            zScoreVal: zScoreVar,
         }
+        console.log(body)
 
         const response = fetch("http://localhost:8443/submit-hyperparameters", {
             method: "POST",
@@ -111,12 +122,20 @@ const ModelConfig = () => {
         </div>
     )
 
+    const zScore = (
+        <div className={'z-score-normalisation'}>
+            <input type={'checkbox'} onChange={onZScoreChange}/> <b>Normalise data (Z-Score)</b>
+        </div>
+    )
+
     return (
         <>
             {trainTestSlider}
             {activationSelector}
             {datasetSize}
+            {zScore}
             {submitModelConfigButton}
+
         </>
     )
 }

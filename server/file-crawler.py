@@ -2,7 +2,7 @@ import pandas as pd
 import requests
 import time
 
-PATH = './uploads/'
+PATH = './src/uploads/'
 uploaded = False;
 
 def upload_data():

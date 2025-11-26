@@ -85,12 +85,12 @@ x_train, x_test = x_train.reshape(-1, 784, 1), x_test.reshape(-1, 784, 1)
 y_train, y_test = y_train.reshape(-1, 10, 1), y_test.reshape(-1, 10, 1)
 
 model = NeuralNetwork(
-    [784, 256, 256, 10],
+    [784, 256, 10],
     layer_activations=[ReLU, ReLU, Sigmoid],
     model_loss=CategoricalCrossEntropyWithSoftmax
 )
 
-losses = model.fit(x_train, y_train, 2, lr=0.001)
+losses = model.fit(x_train, y_train, 10, lr=0.001)
 
 plt.plot(losses)
 #plt.show()
@@ -100,7 +100,7 @@ plt.plot(losses)
 correct_counter = 0
 total_counter = 0
 
-for index, element in enumerate(x_test):
+for index, element in tqdm(enumerate(x_test)):
     element = np.array(element).reshape(1, 784, 1)
     prediction = model.forward(element)
 
@@ -116,6 +116,6 @@ json_post = {
 requests.post("http://localhost:8443/returned-metrics", json_post)
 
 plt.plot(losses)
-plt.savefig("./uploads/losses.png")
+plt.savefig("./src/uploads/losses.png", dpi=1000)
 
-requests.post("http://localhost:8443/post-loss-png-url", json={"urlSubmitted": True, 'pngUrl': './uploads/losses.png'})
+# requests.post("http://localhost:8443/post-loss-png-url", json={"urlSubmitted": True, 'pngUrl': './src/uploads/losses.png'})

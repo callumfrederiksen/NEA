@@ -1,0 +1,7 @@
+.metrics-window {
+    padding-left: 30%;
+    width: 70%;
+    position: absolute;
+    pointer-events: none;
+}
+

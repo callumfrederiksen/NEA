@@ -35,5 +35,5 @@ datasets
 backend/__pycache__
 
 package-lock.json
-uploads/
+src/uploads/
 __pycache__/

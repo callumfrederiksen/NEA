@@ -1,6 +1,6 @@
 import Header from './components/header/header.jsx';
 import DataPreProcessing from './components/data-pre-processing/data-pre-processing.jsx';
-
+import MetricsWindow from './components/metrics-window/metrics-window.jsx';
 
 import React, {useState, useEffect} from 'react';
 import './index.css';
@@ -18,7 +18,9 @@ function App() {
     return (
       <>
       <Header />
+      <MetricsWindow />
       <DataPreProcessing />
+
 
       </>
     );

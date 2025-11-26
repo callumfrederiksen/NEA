@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json())
 app.use(cors());
 
-const PATH = './uploads/'
+const PATH = './src/uploads/'
 const port = 8443; // Port for server for FILE UPLOADS to run on
 let latestColumns = [];
 let yColumn = "";
@@ -20,7 +20,7 @@ let hyperparamtersSubmitted = false;
 let split = 0.8;
 let shape = [0, 1];
 let ycsize = [1, 1];
-
+let zScoreVar = false;
 
 
 let uploadStruct = {
@@ -29,7 +29,7 @@ let uploadStruct = {
 }
 
 const storage = multer.diskStorage({
-    destination: './uploads/',
+    destination: './src/uploads/',
     filename: (req, file, cb) => {
         cb(null, file.originalname);
     }
@@ -72,7 +72,7 @@ app.get('/return-select-y-column', (req, res) => {
 });
 
 app.post('/submit-hyperparameters', (req, res) => {
-    let { submitted, modelSize, layerActivations, modelLoss, testTrainSplit, dataSetShape, yColumnSize } = req.body;
+    let { submitted, modelSize, layerActivations, modelLoss, testTrainSplit, dataSetShape, yColumnSize, zScoreVal } = req.body;
     hyperparamtersSubmitted = submitted;
     size = modelSize;
     activations = layerActivations;
@@ -80,6 +80,7 @@ app.post('/submit-hyperparameters', (req, res) => {
     split = testTrainSplit;
     shape = dataSetShape;
     ycsize = yColumnSize;
+    zScoreVar = zScoreVal;
 });
 
 app.get("/return-hyperparameters", (req, res) => {
@@ -91,7 +92,9 @@ app.get("/return-hyperparameters", (req, res) => {
         testTrainSplit: split,
         dataSetShape: shape,
         yColumnSize: ycsize,
+        zScoreVal: zScoreVar
     });
+    console.log(zScoreVar);
 })
 
 let accuracyScore = "a";
@@ -120,25 +123,6 @@ app.get("/get-loss-png-url", (req, res) => {
         pngUrl: lossUrl
     });
 });
-
-/*
-const privateKey = fs.readFileSync('/etc/ssl/name_com/PRIVATEKEY.key', 'utf8');
-const certificate = fs.readFileSync('/etc/ssl/name_com/2507935545.crt', 'utf8');
-const bundle = fs.readFileSync('/etc/ssl/name_com/bundle.crt', 'utf8');
-const passphrase = fs.readFileSync('/etc/ssl/name_com/PASSPHRASE.txt', 'utf8').slice(0, 11);
-
-const credentials = {
-	key: privateKey,
-	cert: certificate,
-	ca: bundle,
-	passphrase: passphrase
-};
-
-
-https.createServer(credentials, app).listen(port, () => {
-    console.log('Server Running on port ' + port);
-});
-*/
 
 app.listen(port, () => {
     console.log('Server running on port ' + port);
