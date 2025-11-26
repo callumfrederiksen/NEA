@@ -100,8 +100,8 @@ const ModelConfig = () => {
             layerActivations: layerActivations,
             modelLoss: "CategoricalCrossEntropyWithSoftmax",
             testTrainSplit: sliderValue,
-            dataSetShape: "784,1;781,1;",
-            yColumnSize: "10,1;",
+            dataSetShape: "784,1",
+            yColumnSize: "10,1",
             zScoreVal: zScoreVar,
         }
         console.log(body)
