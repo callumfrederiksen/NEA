@@ -2,9 +2,9 @@ from operator import truediv
 
 import numpy as np
 import matplotlib.pyplot as plt
-from main import NeuralNetwork
-from activations import *
-from losses import *
+import main
+import activations
+import losses
 import pandas as pd
 import matplotlib.pyplot as plt
 from tqdm import tqdm
@@ -52,7 +52,7 @@ def dataSetShapeToArray(raw_shape):
 x_shape = dataSetShapeToArray(raw_x_shape)
 
 x_columns = x_columns.reshape(x_shape)
-
+y_column
 #5 Data Normalisation
 
 def z_score(x):
@@ -98,6 +98,8 @@ def one_hot_encode(y):
 
 print(getUniqueValues(y_column))
 
+if oneHot:
+    y_column = one_hot_encode(y_column)
 #7 Splits
 total_size = x_columns.shape[0]
 split = int(total_size * hyperparameters['testTrainSplit']) # // 1 # To round down if needed?
@@ -111,7 +113,30 @@ test_x = x_columns[split:]
 train_y = y_column[:split]
 test_y = y_column[split:]
 
-print(train_x.shape)
-print(test_x.shape)
-print(train_y.shape)
-print(test_y.shape)
+# Model definition
+
+model_size = hyperparameters['modelSize']
+layer_activations = hyperparameters['layerActivations']
+model_loss = hyperparameters["modelLoss"]
+activation_constructor = []
+for layer in layer_activations:
+    if layer == "ReLU":
+        activation_constructor.append(activations.ReLU)
+    elif layer == 'Sigmoid':
+        activation_constructor.append(activations.Sigmoid)
+    elif layer == 'SoftMax':
+        activation_constructor.append(activations.Softmax)
+
+loss_constructor = None
+if model_loss == "CategoricalCrossEntropyWithSoftmax":
+    loss_constructor = losses.CategoricalCrossEntropyWithSoftmax
+elif model_loss == "SSE":
+    loss_constructor = losses.SSE
+
+model = main.NeuralNetwork(
+    model_size=model_size,
+    layer_activations=activation_constructor,
+    model_loss=model_loss
+)
+
+print(hyperparameters)

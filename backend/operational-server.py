@@ -86,11 +86,11 @@ y_train, y_test = y_train.reshape(-1, 10, 1), y_test.reshape(-1, 10, 1)
 
 model = NeuralNetwork(
     [784, 256, 10],
-    layer_activations=[ReLU, ReLU, Sigmoid],
+    layer_activations=[ReLU, ReLU, Softmax],
     model_loss=CategoricalCrossEntropyWithSoftmax
 )
 
-losses = model.fit(x_train, y_train, 10, lr=0.001)
+losses = model.fit(x_train, y_train, 2, lr=0.001)
 
 plt.plot(losses)
 #plt.show()
@@ -117,5 +117,5 @@ requests.post("http://localhost:8443/returned-metrics", json_post)
 
 plt.plot(losses)
 plt.savefig("./src/uploads/losses.png", dpi=1000)
-
+print(losses)
 # requests.post("http://localhost:8443/post-loss-png-url", json={"urlSubmitted": True, 'pngUrl': './src/uploads/losses.png'})
