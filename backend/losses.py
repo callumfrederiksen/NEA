@@ -15,7 +15,9 @@ class CategoricalCrossEntropyWithSoftmax:
     combination = True
     @staticmethod
     def compute(y_hat, y):
-        return -np.sum( y * np.log(y_hat) )
+        eps = 1e-12
+        y_hat = np.clip(y_hat, eps, 1.0 - eps)
+        return -np.sum(y * np.log(y_hat))
 
     @staticmethod
     def derivative(y_hat, y):

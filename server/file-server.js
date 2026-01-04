@@ -21,6 +21,8 @@ let split = 0.8;
 let shape = [0, 1];
 let ycsize = [1, 1];
 let zScoreVar = false;
+let modelEpochs = 0;
+let modelLR = 0;
 
 
 let uploadStruct = {
@@ -72,7 +74,7 @@ app.get('/return-select-y-column', (req, res) => {
 });
 
 app.post('/submit-hyperparameters', (req, res) => {
-    let { submitted, modelSize, layerActivations, modelLoss, testTrainSplit, dataSetShape, yColumnSize, zScoreVal } = req.body;
+    let { submitted, modelSize, layerActivations, modelLoss, testTrainSplit, dataSetShape, yColumnSize, zScoreVal, epochs, lr } = req.body;
     hyperparamtersSubmitted = submitted;
     size = modelSize;
     activations = layerActivations;
@@ -81,6 +83,8 @@ app.post('/submit-hyperparameters', (req, res) => {
     shape = dataSetShape;
     ycsize = yColumnSize;
     zScoreVar = zScoreVal;
+    modelEpochs = epochs;
+    modelLR = lr;
 });
 
 app.get("/return-hyperparameters", (req, res) => {
@@ -92,7 +96,9 @@ app.get("/return-hyperparameters", (req, res) => {
         testTrainSplit: split,
         dataSetShape: shape,
         yColumnSize: ycsize,
-        zScoreVal: zScoreVar
+        zScoreVal: zScoreVar,
+        epochs: modelEpochs,
+        lr: modelLR
     });
     console.log(zScoreVar);
 })

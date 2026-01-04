@@ -1,5 +1,3 @@
-from operator import truediv
-
 import numpy as np
 import matplotlib.pyplot as plt
 import main
@@ -134,9 +132,35 @@ elif model_loss == "SSE":
     loss_constructor = losses.SSE
 
 model = main.NeuralNetwork(
-    model_size=model_size,
+    size=model_size,
     layer_activations=activation_constructor,
-    model_loss=model_loss
+    model_loss=loss_constructor
 )
 
-print(hyperparameters)
+epochs = int(hyperparameters['epochs'])
+lr = float(hyperparameters['lr'])
+print(f'Epochs: {epochs}, alpha: {lr}')
+losses = model.fit(
+    train_x,
+    train_y,
+    epochs=epochs,
+    lr=lr
+)
+
+plt.plot(losses)
+plt.show()
+
+correct_counter = 0
+total_counter = 0
+
+for index, element in tqdm(enumerate(test_x)):
+    element = np.array(element).reshape(1, 784, 1)
+    prediction = model.forward(element)
+
+    if int(np.argmax(prediction)) == int(np.argmax(test_y[index])):
+        correct_counter += 1
+
+    total_counter += 1
+
+print(correct_counter/total_counter)
+result = f'{(correct_counter / total_counter * 100):.2f}% accuracy'

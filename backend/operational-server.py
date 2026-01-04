@@ -90,7 +90,7 @@ model = NeuralNetwork(
     model_loss=CategoricalCrossEntropyWithSoftmax
 )
 
-losses = model.fit(x_train, y_train, 2, lr=0.001)
+losses = model.fit(x_train, y_train, 10, lr=0.001)
 
 plt.plot(losses)
 #plt.show()
@@ -109,6 +109,7 @@ for index, element in tqdm(enumerate(x_test)):
 
     total_counter += 1
 
+print(correct_counter/total_counter)
 result = f'{(correct_counter / total_counter * 100):.2f}% accuracy'
 json_post = {
     "accuracyMetric": result

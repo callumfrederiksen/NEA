@@ -67,6 +67,7 @@ const ModelConfig = () => {
         </div>
     );
 
+
     const [trainingDatasetSize, setTrainingDatasetSize] = useState(0);
     const [testingDatasetSize, setTestingDatasetSize] = useState(0);
 
@@ -103,6 +104,8 @@ const ModelConfig = () => {
             dataSetShape: "784,1",
             yColumnSize: "10,1",
             zScoreVal: zScoreVar,
+            epochs: epoch,
+            lr: lr
         }
         console.log(body)
 
@@ -128,12 +131,36 @@ const ModelConfig = () => {
         </div>
     )
 
+    const [epoch, setEpoch] = useState(0);
+
+    const onEpochChange = (e) => {
+        setEpoch(e.target.value);
+    }
+
+    const [lr, setLr] = useState(0);
+
+    const onLrChange = (e) => {
+        setLr(e.target.value);
+    }
+
+    const epochsLearningRate = (
+        <div className={'epoch-entry z-score-normalisation'}>
+            <b>Number of Epochs:</b>
+            <input type={'number'} onChange={onEpochChange}/>
+
+            <b>Learning Rate:</b>
+            <input type={'number'} onChange={onLrChange}/>
+        </div>
+
+    )
+
     return (
         <>
             {trainTestSlider}
             {activationSelector}
             {datasetSize}
             {zScore}
+            {epochsLearningRate}
             {submitModelConfigButton}
 
         </>
