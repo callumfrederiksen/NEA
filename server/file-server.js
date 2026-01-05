@@ -21,6 +21,8 @@ let split = 0.8;
 let shape = [0, 1];
 let ycsize = [1, 1];
 let zScoreVar = false;
+let minMaxVar = false;
+let oneHotVar = false;
 let modelEpochs = 0;
 let modelLR = 0;
 
@@ -74,7 +76,7 @@ app.get('/return-select-y-column', (req, res) => {
 });
 
 app.post('/submit-hyperparameters', (req, res) => {
-    let { submitted, modelSize, layerActivations, modelLoss, testTrainSplit, dataSetShape, yColumnSize, zScoreVal, epochs, lr } = req.body;
+    let { submitted, modelSize, layerActivations, modelLoss, testTrainSplit, dataSetShape, yColumnSize, zScoreVal, minMaxVal, oneHotVal, epochs, lr} = req.body;
     hyperparamtersSubmitted = submitted;
     size = modelSize;
     activations = layerActivations;
@@ -83,6 +85,8 @@ app.post('/submit-hyperparameters', (req, res) => {
     shape = dataSetShape;
     ycsize = yColumnSize;
     zScoreVar = zScoreVal;
+    minMaxVar = minMaxVal;
+    oneHotVar = oneHotVal;
     modelEpochs = epochs;
     modelLR = lr;
 });
@@ -97,6 +101,8 @@ app.get("/return-hyperparameters", (req, res) => {
         dataSetShape: shape,
         yColumnSize: ycsize,
         zScoreVal: zScoreVar,
+        minMaxVal: minMaxVar,
+        oneHotVal: oneHotVar,
         epochs: modelEpochs,
         lr: modelLR
     });

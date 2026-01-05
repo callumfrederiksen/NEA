@@ -3,15 +3,9 @@ import './model-config.css';
 
 const ModelConfig = () => {
     let [ sliderValue, setSliderValue ] = useState(0.5);
-    let [ zScoreVar, setZScoreVar ] = useState(false);
 
-    const onZScoreChange = (e) => {
-        if(zScore) {
-            setZScoreVar(true);
-        } else {
-            setZScoreVar(false);
-        }
-    }
+
+
     const onSliderChange = (e) => {
         setSliderValue(e.target.value / 100);
     }
@@ -67,16 +61,42 @@ const ModelConfig = () => {
         </div>
     );
 
+    const [layerSizes, setLayerSizes] = useState([]);
+    const [currentSize, setCurrentSize] = useState(0);
+
+    const changeSize = (e) => {
+        setCurrentSize(e.target.value);
+    }
+
+    const addLayerSize = () => {
+        if(currentSize > 0) {
+            setLayerSizes(layerSizes.concat(currentSize));
+        }
+        console.log(layerSizes);
+    }
+
+    const modelSizeConfig = (
+        <div className={'activation-selector-container'}>
+            <div style={{ paddingTop: "10px" }}></div>
+            <div className={'activation-layers-window'}>
+                {layerSizes.map((str, idx) => <p>&nbsp; Layer {idx+1} Nodes: <b>{str}</b></p>)}
+            </div>
+            <div style={{height:"3px", backgroundColor: "#404049"}}></div>
+            <input type={'number'} onChange={changeSize}/>
+            <label htmlFor={'select-modelSize-button'} className={'select-activation-label'}><b>+</b> Add</label>
+            <button id={'select-modelSize-button'} onClick={ addLayerSize }></button>
+        </div>
+    )
 
     const [trainingDatasetSize, setTrainingDatasetSize] = useState(0);
-    const [testingDatasetSize, setTestingDatasetSize] = useState(0);
+    const [yColumnSize, setYColumnSize] = useState(0);
 
     const setDatasetSizeOnChange = (isTrain) => (e) => {
         if(isTrain) {
             setTrainingDatasetSize(e.target.value);
-            console.log(isTrain)
+            console.log(trainingDatasetSize)
         } else {
-            setTestingDatasetSize(e.target.value);
+            setYColumnSize(e.target.value);
             console.log(isTrain)
         }
     }
@@ -86,10 +106,10 @@ const ModelConfig = () => {
         <div className={'dataset-size-selection'}>
             <div style={{paddingTop: '10px'}}></div>
             <p style={{textAlign: 'center'}}><b>Training Dataset Size:</b></p>
-            <input type={'number'} onChange={setDatasetSizeOnChange(true)}/>
+            <input type={'text'} onChange={setDatasetSizeOnChange(true)}/>
             <div style={{paddingTop: '10px'}}></div>
-            <p style={{textAlign: 'center'}}><b>Testing Dataset Size:</b></p>
-            <input type={'number'} onChange={setDatasetSizeOnChange(false)}/>
+            <p style={{textAlign: 'center'}}><b>Label Size:</b></p>
+            <input type={'text'} onChange={setDatasetSizeOnChange(false)}/>
             <div style={{paddingBottom: ''}}></div>
         </div>
     );
@@ -97,13 +117,15 @@ const ModelConfig = () => {
     const modelConfigSubmission = async () => {
         const body = {
             submitted: true,
-            modelSize: [784, 256, 128, 10],
+            modelSize: layerSizes,
             layerActivations: layerActivations,
-            modelLoss: "CategoricalCrossEntropyWithSoftmax",
+            modelLoss: selectedLoss,
             testTrainSplit: sliderValue,
-            dataSetShape: "784,1",
-            yColumnSize: "10,1",
+            dataSetShape: trainingDatasetSize,
+            yColumnSize: yColumnSize,
             zScoreVal: zScoreVar,
+            minMaxVal: minMaxVar,
+            oneHotVal: oneHotVar,
             epochs: epoch,
             lr: lr
         }
@@ -124,10 +146,18 @@ const ModelConfig = () => {
             <button id={'submit-button-2'} onClick={modelConfigSubmission}></button>
         </div>
     )
+    let [ zScoreVar, setZScoreVar ] = useState(false);
+    let [ minMaxVar, setMinMaxVar ] = useState(false);
+    let [ oneHotVar, setOneHotVar ] = useState(false);
+    const onZScoreChange = (e) => { setZScoreVar(e.target.checked); }
+    const onMinMaxChange = (e) => { setMinMaxVar(e.target.checked); }
+    const onOneHotChange = (e) => { setOneHotVar(e.target.checked); }
 
-    const zScore = (
+    const scores = (
         <div className={'z-score-normalisation'}>
             <input type={'checkbox'} onChange={onZScoreChange}/> <b>Normalise data (Z-Score)</b>
+            <input type={'checkbox'} onChange={onMinMaxChange}/> <b>Normalise data (MinMax)</b> {/*MUST ADD TEST*/}
+            <input type={'checkbox'} onChange={onOneHotChange}/> <b>Encode data (One-Hot)</b>
         </div>
     )
 
@@ -151,18 +181,38 @@ const ModelConfig = () => {
             <b>Learning Rate:</b>
             <input type={'number'} onChange={onLrChange}/>
         </div>
-
     )
 
+    const [selectedLoss, setSelectedLoss] = useState("");
+    const modifyLoss = (e) => { // TODO: Change name!
+        let lossTarget = e.target.value.substring(3);
+        if(lossTarget !== "Select Loss Function...") {
+            setSelectedLoss(lossTarget);
+        }
+    }
+
+    const modelLoss = (
+        <div className={'select-model-loss'}>
+            <b> </b>
+            <div className={'activation-selector-container'}>
+                <select className={'select-activation'} onChange={ modifyLoss }>
+                    <option>&nbsp;&nbsp;&nbsp;Select Loss Function...</option>
+                    <option>&nbsp;&nbsp;&nbsp;SSE</option>
+                    <option>&nbsp;&nbsp;&nbsp;CategoricalCrossEntropyWithSoftmax</option>
+                </select>
+            </div>
+        </div>
+    )
     return (
         <>
             {trainTestSlider}
             {activationSelector}
+            {modelSizeConfig}
             {datasetSize}
-            {zScore}
+            {scores}
             {epochsLearningRate}
+            {modelLoss}
             {submitModelConfigButton}
-
         </>
     )
 }

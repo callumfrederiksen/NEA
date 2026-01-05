@@ -34,6 +34,7 @@ y_column = np.array(y_column)
 
 #4.2 Reshaping X for model
 raw_x_shape = hyperparameters['dataSetShape']
+raw_y_shape = hyperparameters['yColumnSize']
 
 def dataSetShapeToArray(raw_shape):
     shape = [-1]
@@ -48,9 +49,11 @@ def dataSetShapeToArray(raw_shape):
     return shape
 
 x_shape = dataSetShapeToArray(raw_x_shape)
+y_shape = dataSetShapeToArray(raw_y_shape)
 
 x_columns = x_columns.reshape(x_shape)
-y_column
+y_column = y_column.reshape(y_shape)
+print(y_column.shape)
 #5 Data Normalisation
 
 def z_score(x):
@@ -61,8 +64,8 @@ def z_score(x):
 def min_max(x, scale_factor):
     return x / scale_factor
 
-zScore = False # TODO: ALLOW TOGGLING OR SELECTION IN MODEL CONFIG
-minMax = True
+zScore = hyperparameters['zScoreVal']
+minMax = hyperparameters['minMaxVal']
 
 if zScore:
     x_columns = z_score(x_columns)
@@ -70,7 +73,7 @@ elif minMax:
     x_columns = min_max(x_columns, 255) # TODO: ENSURE /255 IS NOT HARDCODED
 
 #6 One-hot encoding
-oneHot = True
+oneHot = hyperparameters['oneHotVal']
 
 def getUniqueValues(y):
     unique_values = []
@@ -94,8 +97,6 @@ def one_hot_encode(y):
     return return_y
 
 
-print(getUniqueValues(y_column))
-
 if oneHot:
     y_column = one_hot_encode(y_column)
 #7 Splits
@@ -111,9 +112,13 @@ test_x = x_columns[split:]
 train_y = y_column[:split]
 test_y = y_column[split:]
 
+print(f'y: {train_y[9]}')
 # Model definition
 
 model_size = hyperparameters['modelSize']
+for i in range(len(model_size)):
+    model_size[i] = int(model_size[i])
+
 layer_activations = hyperparameters['layerActivations']
 model_loss = hyperparameters["modelLoss"]
 activation_constructor = []
@@ -140,6 +145,11 @@ model = main.NeuralNetwork(
 epochs = int(hyperparameters['epochs'])
 lr = float(hyperparameters['lr'])
 print(f'Epochs: {epochs}, alpha: {lr}')
+
+print(model_size)
+print(train_x.shape)
+print(train_y.shape)
+
 losses = model.fit(
     train_x,
     train_y,
@@ -154,7 +164,7 @@ correct_counter = 0
 total_counter = 0
 
 for index, element in tqdm(enumerate(test_x)):
-    element = np.array(element).reshape(1, 784, 1)
+    element = np.array(element).reshape(1, 2, 1)
     prediction = model.forward(element)
 
     if int(np.argmax(prediction)) == int(np.argmax(test_y[index])):
