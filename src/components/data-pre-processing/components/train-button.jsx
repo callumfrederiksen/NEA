@@ -3,20 +3,16 @@ import '../data-pre-processing.css';
 const TrainButton = () => {
     const onClick = async () => {
         const body = {
-            submitted: false,
-            modelSize: [784, 256, 128, 10],
-            layerActivations: ["ReLU", "ReLU", "Softmax"],
-            modelLoss: "CategoricalCrossEntropyWithSoftmax"
+            submitted: true
         }
 
-        const response = fetch("http://localhost:8443/submit-hyperparameters", {
+        const response = fetch("http://localhost:8443/run", {
             method : 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(body)
         });
-        console.log(response)
     }
 
     return (

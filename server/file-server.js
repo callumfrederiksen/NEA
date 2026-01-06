@@ -136,6 +136,18 @@ app.get("/get-loss-png-url", (req, res) => {
     });
 });
 
+let readyToRun = false;
+app.post("/run", (req, res) => {
+    const { submitted } = req.body;
+    readyToRun = submitted;
+});
+
+app.get("/ready-to-run", (req, res) => {
+    res.json({
+        run: readyToRun
+    });
+});
+
 app.listen(port, () => {
     console.log('Server running on port ' + port);
 })
