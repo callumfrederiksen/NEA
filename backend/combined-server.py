@@ -158,7 +158,7 @@ losses = model.fit(
 )
 
 plt.plot(losses)
-plt.show()
+plt.savefig("./src/uploads/losses.png", dpi=1000)
 
 correct_counter = 0
 total_counter = 0
