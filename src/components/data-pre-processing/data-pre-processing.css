@@ -10,6 +10,8 @@
     height:calc(100vh - 70px);
     z-index: 1000;
     width:30%;
+    overflow: hidden;
+    overflow-y: scroll;
 }
 
 #upload-input {

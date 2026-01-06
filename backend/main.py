@@ -1,11 +1,12 @@
 import numpy as np
 from tqdm import tqdm
+import system
 
 class NeuralNetwork:
-    def __init__(self, size, layer_activations, model_loss):
+    def __init__(self, size, layer_activations, model_loss, weights=[None], biases=[None]):
         self.__size = size
-        self.__weights = [None]
-        self.__biases = [None]
+        self.__weights = weights
+        self.__biases = biases
         self.__activations = []
         self.__z_activations = [None]
         self.__layer_activations = [None] + layer_activations
@@ -87,3 +88,7 @@ class NeuralNetwork:
 
             losses.append(loss / len(x))
         return np.array(losses).reshape(epochs)
+
+    def save(self, url='./src/download/'):
+        np.save(url+"weights", np.array(self.__weights,dtype=object), allow_pickle=True)
+        np.save(url+"biases", np.array(self.__biases,dtype=object), allow_pickle=True)

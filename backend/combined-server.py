@@ -182,6 +182,8 @@ class CombinedServer:
         print(correct_counter/total_counter)
         result = f'{(correct_counter / total_counter * 100):.2f}% accuracy'
 
+
+
     def run(self):
         self.__get_hyperparameters()
         self.__read_and_drop_csv()
@@ -191,6 +193,8 @@ class CombinedServer:
         self.__model_definition()
         self.__fit()
         self.__test_accuracy()
+
+        self.__model.save()
 
 if __name__ == '__main__':
     CombinedServer().run()
