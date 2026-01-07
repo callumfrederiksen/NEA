@@ -8,10 +8,11 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 import requests
 
+from tools import Tools
 #1 Get Hyperparamters
-
-class CombinedServer:
+class CombinedServer(Tools):
     def __init__(self):
+        super().__init__()
         self.__url = "http://localhost:8443"
 
     def __get_hyperparameters(self):
@@ -63,43 +64,14 @@ class CombinedServer:
         self.__x_columns = self.__x_columns.reshape(x_shape)
         self.__y_column = self.__y_column.reshape(y_shape)
 
-    def __z_score(self, x):
-        mean = np.mean(x)
-        std = np.std(x)
-        return (x - mean) / std
-
-    def __min_max(self, x, scale_factor):
-        return x / scale_factor
-
-    def __getUniqueValues(self, y):
-        unique_values = []
-        for data_point in y:
-            if data_point not in unique_values:
-                unique_values.append(int(data_point)) # TODO: TEST FOR A POINT OF ERROR
-        # TODO: MERGE SORT !!!!!!!!!!!!!!!!!!
-        return unique_values
-
-    def __one_hot_encode(self, y):
-        return_y = []
-        unique_values = self.__getUniqueValues(y)
-        for data_point in y:
-            to_return = [0] * len(unique_values)
-            index = unique_values.index(data_point)
-            to_return[index] = 1
-            return_y.append(to_return)
-
-        return_y = np.array(return_y)
-        return_y = return_y.reshape(-1, len(unique_values), 1)
-        return return_y
-
     def __data_normalisation_and_one_hot(self):
         zScore = self.__hyperparameters['zScoreVal']
         minMax = self.__hyperparameters['minMaxVal']
 
         if zScore:
-            self.__x_columns = self.__z_score(self.__x_columns)
+            self.__x_columns = self._z_score(self.__x_columns)
         elif minMax:
-            self.__x_columns = self.__min_max(self.__x_columns, 255) # TODO: ENSURE /255 IS NOT HARDCODED
+            self.__x_columns = self._min_max(self.__x_columns, 255) # TODO: ENSURE /255 IS NOT HARDCODED
 
         #6 One-hot encoding
         oneHot = self.__hyperparameters['oneHotVal']
@@ -108,7 +80,7 @@ class CombinedServer:
         print("yColumnSize raw:", self.__hyperparameters["yColumnSize"])
 
         if oneHot:
-            self.__y_column = self.__one_hot_encode(self.__y_column)
+            self.__y_column = self._one_hot_encode(self.__y_column)
 
     def __generate_splits(self):
         # The split works where a specific index, for example MNIST with a size of 60000 has a 0.8 test-train split

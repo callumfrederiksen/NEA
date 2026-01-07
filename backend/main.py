@@ -1,6 +1,5 @@
 import numpy as np
 from tqdm import tqdm
-import system
 
 class NeuralNetwork:
     def __init__(self, size, layer_activations, model_loss, weights=[None], biases=[None]):

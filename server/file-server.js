@@ -151,3 +151,12 @@ app.get("/ready-to-run", (req, res) => {
 app.listen(port, () => {
     console.log('Server running on port ' + port);
 })
+
+app.get('/download-parameters', (req,res) => {
+    res.download('./src/download/weights.npy', 'weights.npy');
+    res.download('./src/download/biases.npy', 'biases.npy');
+})
+
+// app.get('/download/biases.npy', (req,res) => {
+//     res.download('./src/download/biases.npy', 'biases.npy');
+// })
