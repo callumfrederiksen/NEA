@@ -153,7 +153,7 @@ app.listen(port, () => {
 })
 
 app.get('/download-parameters', (req,res) => {
-    res.download('./src/download/weights.npy', 'weights.npy');
+    //res.download('./src/download/weights.npy', 'weights.npy');
     res.download('./src/download/biases.npy', 'biases.npy');
 })
 
