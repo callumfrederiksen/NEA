@@ -131,13 +131,50 @@ const ModelConfig = () => {
         }
         console.log(body)
 
-        const response = fetch("http://localhost:8443/submit-hyperparameters", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        });
+        let passes = false;
+
+        if (body.zScoreVal === true && body.minMaxVal === true) {
+            alert("You cannot select both Z-score Validation and Min-Max normalisation");
+        } else if (body.modelSize.length !== body.layerActivations.length) {
+            alert("The number of layers in the model and the number of activation functions must match");
+        } else if (body.modelSize.length === 0 || body.layerActivations.length === 0) {
+            alert("At least one layer must be added");
+        } else if (body.modelLoss === "") {
+            alert("The model must have a loss function selected");
+        } else if (body.modelLoss === "CategoricalCrossEntropyWithSoftmax" && body.layerActivations[body.layerActivations.length - 1] !== "SoftMax") {
+            alert("If the CategoricalCrossEntropyWithSoftmax loss function is selected, the final layer's activation must be Softmax")
+        } else if (String(body.epochs) === "" || String(body.lr) === "") {
+            alert("There must be an entry")
+        } else if (Number.parseFloat(body.epochs) <= 0) {
+            alert("The number of epochs must be 1 or greater.")
+        } else if (!Number.isInteger(Number.parseFloat(body.epochs))) {
+            alert("The number of epochs must be an integer.")
+        } else if (Number.parseFloat(body.lr) <= 0) {
+            alert("The learning rate must be a positive number, greater than 0.")
+        } else if (body.dataSetShape === 0) {
+            alert("An input must be provided for the dataset shape")
+        } else if (body.yColumnSize === 0) {
+            alert("An input must be provided for the y column size")
+        } else {
+            passes = true;
+        }
+
+        body.lr = String(body.lr)
+        body.epochs = String(body.epochs)
+
+        // else if(body.layerActivations.indexOf("SoftMax") !== body.layerActivations.length - 1 || body.layerActivations.indexOf("SoftMax") !== -1) {
+        //     alert("The Softmax function can only be applied last")
+        //     alert(body.layerActivations.length - 1) // FIX TODO
+        // }
+        if(passes) {
+            const response = fetch("http://localhost:8443/submit-hyperparameters", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
+        }
     }
 
     const submitModelConfigButton = (

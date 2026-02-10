@@ -27,7 +27,7 @@ model = main.NeuralNetwork([784, 128, 10],
                            biases=b
                            )
 
-for i in range(10):
+for i in range(5):
     show_x = df[i,1:]
     y_prediction = model.forward(x[i])
     y_prediction = np.argmax(y_prediction)

@@ -109,7 +109,7 @@ app.get("/return-hyperparameters", (req, res) => {
     console.log(zScoreVar);
 })
 
-let accuracyScore = "a";
+let accuracyScore = "NA";
 app.post('/returned-metrics',(req, res) => {
     const { accuracyMetric } = req.body;
     accuracyScore = accuracyMetric;
@@ -152,9 +152,13 @@ app.listen(port, () => {
     console.log('Server running on port ' + port);
 })
 
-app.get('/download-parameters', (req,res) => {
+app.get('/download-parameters-weights', (req,res) => {
     //res.download('./src/download/weights.npy', 'weights.npy');
-    res.download('./src/download/biases.npy', 'biases.npy');
+    res.download('./src/download/weights.npy', 'weights.npy');
+})
+
+app.get('/download-parameters-biases', (req, res) => {
+    res.download('./src/download/biases.npy', 'biases.npy')
 })
 
 // app.get('/download/biases.npy', (req,res) => {

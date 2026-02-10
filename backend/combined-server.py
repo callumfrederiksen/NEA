@@ -24,15 +24,10 @@ class CombinedServer(Tools):
         self.__df = pd.read_csv(self.__upload_path)
 
         #3 Drop Columns
-        #3.1 Isolating the y column
         self.__y_column_name = requests.get("http://localhost:8443/return-select-y-column").json()['yColumnName']
         self.__y_column = self.__df[self.__y_column_name]
         self.__x_columns = self.__df.drop(self.__y_column_name, axis=1)
 
-        # #3.2 Custom Drop Columns'
-        # columns_to_drop = [] # TODO: Add columns manually using trainable.studio
-        # for column in columns_to_drop:
-        #     x_columns.drop(column, axis=1)'
 
     def __dataSetShapeToArray(self, raw_shape):
         shape = [-1]
@@ -143,7 +138,10 @@ class CombinedServer(Tools):
         total_counter = 0
 
         for index, element in tqdm(enumerate(self.__test_x)):
-            element = np.array(element).reshape(1, 784, 1)
+            try:
+                element = np.array(element).reshape(1, 784, 1)
+            except:
+                element = np.array(element).reshape(1, 2, 1)
             prediction = self.__model.forward(element)
 
             if int(np.argmax(prediction)) == int(np.argmax(self.__test_y[index])):
@@ -153,8 +151,7 @@ class CombinedServer(Tools):
 
         print(correct_counter/total_counter)
         result = f'{(correct_counter / total_counter * 100):.2f}% accuracy'
-
-
+        requests.post("http://localhost:8443/returned-metrics", json={'accuracyMetric':result})
 
     def run(self):
         self.__get_hyperparameters()

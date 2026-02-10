@@ -8,6 +8,7 @@ def z_score(x):
 
     return (x - mean) / std
 
+
 x, y = make_moons(100000, noise=0.1)
 
 #RESHAPE Y - A

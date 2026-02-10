@@ -15,6 +15,7 @@ class Tools:
     def _getUniqueValues(self, y):
         unique_values = []
         for data_point in y:
+            # print(data_point)
             if data_point not in unique_values:
                 unique_values.append(int(data_point)) # TODO: TEST FOR A POINT OF ERROR
         # TODO: MERGE SORT !!!!!!!!!!!!!!!!!!
