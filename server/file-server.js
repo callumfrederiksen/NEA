@@ -4,11 +4,13 @@ const cors = require('cors');
 const https = require('https');
 const fs = require('fs');
 
+// Defining the express app
 const app = express();
 
 app.use(express.json())
 app.use(cors());
 
+// Variable initialisations
 const PATH = './src/uploads/'
 const port = 8443; // Port for server for FILE UPLOADS to run on
 let latestColumns = [];
@@ -42,7 +44,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.post('/upload', upload.single('file'), (req, res) => {
-    if(req.file) { res.send('hell yeah'); 
+    if(req.file) { res.send('recieved');
         console.log("recieved");
         uploadStruct.hasUploaded = true;
         uploadStruct.filePath = PATH + req.file.originalname
@@ -161,6 +163,3 @@ app.get('/download-parameters-biases', (req, res) => {
     res.download('./src/download/biases.npy', 'biases.npy')
 })
 
-// app.get('/download/biases.npy', (req,res) => {
-//     res.download('./src/download/biases.npy', 'biases.npy');
-// })

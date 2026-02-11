@@ -1,5 +1,4 @@
 import numpy as np
-import activations
 
 class SSE:
     combination = None

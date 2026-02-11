@@ -17,8 +17,7 @@ class Tools:
         for data_point in y:
             # print(data_point)
             if data_point not in unique_values:
-                unique_values.append(int(data_point)) # TODO: TEST FOR A POINT OF ERROR
-        # TODO: MERGE SORT !!!!!!!!!!!!!!!!!!
+                unique_values.append(int(data_point))
         return sorted(unique_values)
 
     def _one_hot_encode(self, y):

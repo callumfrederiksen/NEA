@@ -9,7 +9,7 @@
     import './data-pre-processing.css';
 
     const DataPreProcessing = () => {
-        const [ displayConfigs, setDisplayConfigs ] = useState(false); // change
+        const [ displayConfigs, setDisplayConfigs ] = useState(false);
 
         const switchDisplayConfigsON = () => {
             setDisplayConfigs(true);

@@ -3,6 +3,7 @@ from tqdm import tqdm
 
 class NeuralNetwork:
     def __init__(self, size, layer_activations, model_loss, weights=[None], biases=[None]):
+        # Variable constructor intitialisation
         self.__size = size
         self.__weights = weights
         self.__biases = biases
@@ -14,6 +15,7 @@ class NeuralNetwork:
         self.__initialise_parameters()
 
     def __initialise_parameters(self):
+        # Initialises the parameters for the model ( weight and biases )
         for layer in range(1, len(self.__size)):
             self.__weights.append(
                 np.random.randn(self.__size[layer], self.__size[layer-1]) / 10
@@ -26,6 +28,7 @@ class NeuralNetwork:
             self.__delta_L_activation_required = False
 
     def forward(self, xi):
+        # The forward propagations step
         activations = [xi]
         z_activations = [None]
 
@@ -42,6 +45,7 @@ class NeuralNetwork:
         return activations[-1] # y_hat
 
     def backprop(self, xi, yi):
+        # The backpropagation step through the model
         deltas = [None] * len(self.__size)
         weight_derivatives = [None]
         bias_derivatives = [None]
@@ -70,6 +74,7 @@ class NeuralNetwork:
 
 
     def fit(self, x, y, epochs, lr=0.1):
+        # The training loop where the parameters are "fit" to the data
         losses = []
         for i in tqdm(range(epochs)):
             loss = 0
@@ -89,5 +94,6 @@ class NeuralNetwork:
         return np.array(losses).reshape(epochs)
 
     def save(self, url='./src/download/'):
+        # Model parameters saved for exporting
         np.save(url+"weights", np.array(self.__weights,dtype=object), allow_pickle=True)
         np.save(url+"biases", np.array(self.__biases,dtype=object), allow_pickle=True)

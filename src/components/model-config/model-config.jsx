@@ -4,8 +4,6 @@ import './model-config.css';
 const ModelConfig = () => {
     let [ sliderValue, setSliderValue ] = useState(0.5);
 
-
-
     const onSliderChange = (e) => {
         setSliderValue(e.target.value / 100);
     }

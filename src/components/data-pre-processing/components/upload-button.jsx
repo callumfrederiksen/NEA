@@ -24,7 +24,7 @@ function UploadButton() {
         }
     }
 
-    return ( // https://stackoverflow.com/questions/572768/styling-an-input-type-file-button
+    return (
         <div className={'upload-section'}>
             <label htmlFor={'upload-input'} className={'upload-input-label'}>
                 Upload File
